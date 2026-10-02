@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irregular Verbs Master - Pro Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Header & Nav Tabs */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0;
+            font-weight: 700;
+            background: linear-gradient(to right, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255,255,255,0.05);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .view-section {
+            display: none;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        /* Statistiche rapide */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(255,255,255,0.03);
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .stats-bar span b {
+            color: var(--text);
+        }
+
+        /* Quiz UI */
+        .italiano-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(192, 132, 252, 0.1));
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .italiano-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a5b4fc;
+            margin-bottom: 5px;
+        }
+
+        .italiano-text {
+            font-size: 26px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .audio-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        .audio-btn:hover { background: rgba(255,255,255,0.2); }
+
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            box-sizing: border-box;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            transition: transform 0.1s, background 0.2s;
+            font-family: 'Outfit', sans-serif;
+        }
+        .action-btn:active { transform: scale(0.98); }
+
+        .btn-primary { background: var(--primary); flex: 2; }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-secondary { background: rgba(255,255,255,0.08); flex: 1; color: var(--text-muted); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.12); color: white; }
+
+        /* Hint box */
+        #hint-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: #fbbf24;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        /* Feedback Area */
+        #feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: none;
+            line-height: 1.4;
+        }
+        #feedback.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); color: #34d399; display: block; }
+        #feedback.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; display: block; }
+
+        /* Lista / Dizionario */
+        .search-box {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        .verbs-list {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+        .verbs-list::-webkit-scrollbar { width: 4px; }
+        .verbs-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .verb-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .verb-item-info .ita { font-size: 12px; color: var(--text-muted); }
+        .verb-item-info .eng { font-size: 14px; font-weight: 600; color: white; }
+        .verb-item-forms { font-size: 12px; color: #818cf8; text-align: right; }
+
+        /* Time attack mode style */
+        .timer-display {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--warning);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="app-header">
+        <h1>⚡ VerbsMaster Pro</h1>
+        <div id="streak-counter" style="font-size: 13px; color: var(--warning);">🔥 <span id="streak-num">0</span></div>
+    </div>
+
+    <!-- Tab di Navigazione -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="cambiaTab('quiz')">Allenati</button>
+        <button class="tab-btn" onclick="cambiaTab('timeattack')">Time Attack ⏱️</button>
+        <button class="tab-btn" onclick="cambiaTab('dizionario')">Dizionario 📖</button>
+    </div>
+
+    <!-- SEZIONE QUIZ CLASSICO -->
+    <div id="section-quiz" class="view-section active">
+        <div class="stats-bar">
+            <span id="score-text">Progresso: <b>1 / 100</b></span>
+            <span id="accuracy-text">Precisione: <b>100%</b></span>
+        </div>
+
+        <div class="italiano-card">
+            <div class="italiano-label">Traduci il verbo</div>
+            <div class="italiano-text" id="label-italiano">Caricamento...</div>
+            <button class="audio-btn" onclick="pronunciaVerbo()" title="Ascolta pronuncia">🔊</button>
+        </div>
+
+        <div id="hint-box"></div>
+
+        <div class="input-group">
+            <label>Base Form</label>
+            <input type="text" id="base" autocomplete="off" autocapitalize="none" placeholder="es. be">
+        </div>
+        <div class="input-group">
+            <label>Past Simple</label>
+            <input type="text" id="past" autocomplete="off" autocapitalize="none" placeholder="es. was / were">
+        </div>
+        <div class="input-group">
+            <label>Past Participle</label>
+            <input type="text" id="participle" autocomplete="off" autocapitalize="none" placeholder="es. been">
+        </div>
+
+        <div class="btn-row">
+            <button class="action-btn btn-secondary" onclick="mostraIndizio()">💡 Indizio</button>
+            <button class="action-btn btn-primary" id="action-btn" onclick="controllaVerbo()">Verifica</button>
+        </div>
+
+        <div id="feedback"></div>
+    </div>
+
+    <!-- SEZIONE TIME ATTACK -->
+    <div id="section-timeattack" class="view-section">
+        <div class="timer-display" id="timer">60s</div>
+        <div id="ta-start-screen" style="text-align: center; padding: 20px 0;">
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Quanti verbi riesci a indovinare in 1 minuto?</p>
+            <button class="action-btn btn-primary" style="width: 100%;" onclick="avviaTimeAttack()">Inizia la Sfida 🚀</button>
+        </div>
+        <div id="ta-game-screen" style="display: none;">
+            <div class="italiano-card" style="padding: 15px;">
+                <div class="italiano-label">Traduci rapidamente</div>
+                <div class="italiano-text" id="ta-italiano" style="font-size: 22px;">---</div>
+            </div>
+            <div class="input-group"><input type="text" id="ta-base" placeholder="Base Form" autocomplete="off"></div>
+            <div class="input-group"><input type="text" id="ta-past" placeholder="Past Simple" autocomplete="off"></div>
+            <div class="input-group"><input type="text" id="ta-part" placeholder="Past Participle" autocomplete="off"></div>
+            <button class="action-btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="verificaTA()">Avanti / Invia ↵</button>
+            <div style="text-align: center; margin-top: 10px; font-size: 14px;">Punteggio: <b id="ta-score" style="color: var(--success);">0</b></div>
+        </div>
+    </div>
+
+    <!-- SEZIONE DIZIONARIO -->
+    <div id="section-dizionario" class="view-section">
+        <div class="input-group search-box">
+            <input type="text" id="search-input" placeholder="Cerca verbo (es. begin o cominciare)..." oninput="filtraDizionario()">
+        </div>
+        <div class="verbs-list" id="dizionario-container">
+            <!-- Popolato via JS -->
+        </div>
+    </div>
+</div>
+
+<script>
+    const verbiIniziali = [
+        { ita: "essere", base: "be", past: "was, were", part: "been", frase: "I want to _____ happy." },
+        { ita: "battere / sconfiggere", base: "beat", past: "beat", part: "beaten", frase: "We will _____ them in the game." },
+        { ita: "diventare", base: "become", past: "became", part: "become", frase: "She wants to _____ a doctor." },
+        { ita: "cominciare", base: "begin", past: "began", part: "begun", frase: "Lessons _____ at 8 o'clock." },
+        { ita: "piegare", base: "bend", past: "bent", part: "bent", frase: "Don't _____ the metal bar." },
+        { ita: "mordere", base: "bite", past: "bit", part: "bitten", frase: "Does your dog _____?" },
+        { ita: "soffiare", base: "blow", past: "blew", part: "blown", frase: "The wind starts to _____ hard." },
+        { ita: "rompere", base: "break", past: "broke", part: "broken", frase: "Be careful not to _____ the glass." },
+        { ita: "portare", base: "bring", past: "brought", part: "brought", frase: "Please _____ your book tomorrow." },
+        { ita: "costruire", base: "build", past: "built", part: "built", frase: "They are going to _____ a house." },
+        { ita: "bruciare", base: "burn", past: "burned, burnt", part: "burned, burnt", frase: "Dry wood will _____ easily." },
+        { ita: "comperare", base: "buy", past: "bought", part: "bought", frase: "I need to _____ a new phone." },
+        { ita: "afferrare / prendere", base: "catch", past: "caught", part: "caught", frase: "Try to _____ the ball!" },
+        { ita: "scegliere", base: "choose", past: "chose", part: "chosen", frase: "You can _____ any color you like." },
+        { ita: "venire", base: "come", past: "came", part: "come", frase: "Can you _____ to my party?" },
+        { ita: "costare", base: "cost", past: "cost", part: "cost", frase: "How much does this _____?" },
+        { ita: "tagliare", base: "cut", past: "cut", part: "cut", frase: "Use the scissors to _____ the paper." },
+        { ita: "fare", base: "do", past: "did", part: "done", frase: "What do you want to _____?" },
+        { ita: "disegnare", base: "draw", past: "drew", part: "drawn", frase: "I like to _____ animals." },
+        { ita: "sognare", base: "dream", past: "dreamed, dreamt", part: "dreamed, dreamt", frase: "What did you _____ about?" },
+        { ita: "bere", base: "drink", past: "drank", part: "drunk", frase: "I am thirsty, I want to _____ water." },
+        { ita: "guidare", base: "drive", past: "drove", part: "driven", frase: "He is old enough to _____ a car." },
+        { ita: "mangiare", base: "eat", past: "ate", part: "eaten", frase: "I want to _____ an apple." },
+        { ita: "cadere", base: "fall", past: "fell", part: "fallen", frase: "Be careful not to _____ down." },
+        { ita: "nutrire / dare da mangiare", base: "feed", past: "fed", part: "fed", frase: "Don't forget to _____ the cat." },
+        { ita: "sentire / provare un sentimento", base: "feel", past: "felt", part: "felt", frase: "How do you _____ today?" },
+        { ita: "combattere", base: "fight", past: "fought", part: "fought", frase: "Heroes always _____ for justice." },
+        { ita: "trovare", base: "find", past: "found", part: "found", frase: "Can you help me _____ my keys?" },
+        { ita: "volare", base: "fly", past: "flew", part: "flown", frase: "Birds can _____ in the sky." },
+        { ita: "dimenticare", base: "forget", past: "forgot", part: "forgotten", frase: "Try not to _____ your homework." },
+        { ita: "perdonare", base: "forgive", past: "forgave", part: "forgiven", frase: "It is important to _____ others." },
+        { ita: "congelare / gelare", base: "freeze", past: "froze", part: "frozen", frase: "Water will _____ at zero degrees." },
+        { ita: "ottenere / ricevere", base: "get", past: "got", part: "got, gotten", frase: "I need to _____ some sleep." },
+        { ita: "dare", base: "give", past: "gave", part: "given", frase: "Please _____ me that pen." },
+        { ita: "andare", base: "go", past: "went", part: "gone", frase: "Let's _____ to the park." },
+        { ita: "crescere / coltivare", base: "grow", past: "grew", part: "grown", frase: "Plants need water to _____." },
+        { ita: "appendere / appendersi", base: "hang", past: "hung", part: "hung", frase: "_____ your coat on the hook." },
+        { ita: "avere", base: "have", past: "had", part: "had", frase: "I _____ a great idea." },
+        { ita: "sentire (udito)", base: "hear", past: "heard", part: "heard", frase: "Did you _____ that noise?" },
+        { ita: "nascondere", base: "hide", past: "hid", part: "hidden", frase: "Where did you _____ my gift?" },
+        { ita: "colpire", base: "hit", past: "hit", part: "hit", frase: "Don't _____ the ball too hard." },
+        { ita: "tenere / contenere", base: "hold", past: "held", part: "held", frase: "Can you _____ this bag for me?" },
+        { ita: "far male / ferire", base: "hurt", past: "hurt", part: "hurt", frase: "Does your leg _____?" },
+        { ita: "mantenere / conservare", base: "keep", past: "kept", part: "kept", frase: "Please _____ this secret." },
+        { ita: "sapere / conoscere", base: "know", past: "knew", part: "known", frase: "Do you _____ the answer?" },
+        { ita: "stendere / deporre", base: "lay", past: "laid", part: "laid", frase: "_____ the book on the table." },
+        { ita: "guidare / condurre", base: "lead", past: "led", part: "led", frase: "This path will _____ us home." },
+        { ita: "imparare", base: "learn", past: "learned, learnt", part: "learned, learnt", frase: "We _____ English at school." },
+        { ita: "lasciare / partire", base: "leave", past: "left", part: "left", frase: "What time do you _____ home?" },
+        { ita: "prestare", base: "lend", past: "lent", part: "lent", frase: "Can you _____ me 5 euros?" },
+        { ita: "lasciare / permettere", base: "let", past: "let", part: "let", frase: "_____ me help you." },
+        { ita: "mentire / giacere", base: "lie", past: "lay", part: "lain", frase: "It is wrong to _____." },
+        { ita: "accendere / illuminare", base: "light", past: "lit, lighted", part: "lit, lighted", frase: "_____ the candle, please." },
+        { ita: "perdere", base: "lose", past: "lost", part: "lost", frase: "Try not to _____ your keys." },
+        { ita: "fare / creare", base: "make", past: "made", part: "made", frase: "Let's _____ a cake." },
+        { ita: "significare / volere dire", base: "mean", past: "meant", part: "meant", frase: "What does this word _____?" },
+        { ita: "incontrare", base: "meet", past: "met", part: "met", frase: "Nice to _____ you." },
+        { ita: "pagare", base: "pay", past: "paid", part: "paid", frase: "I need to _____ the bill." },
+        { ita: "mettere", base: "put", past: "put", part: "put", frase: "_____ your books in the bag." },
+        { ita: "leggere", base: "read", past: "read", part: "read", frase: "I like to _____ books." },
+        { ita: "cavalcare / andare in sella", base: "ride", past: "rode", part: "ridden", frase: "I can _____ a bike." },
+        { ita: "squillare / sonare", base: "ring", past: "rang", part: "rung", frase: "The phone is going to _____." },
+        { ita: "alzarsi / sorgere", base: "rise", past: "rose", part: "risen", frase: "The sun will _____ early." },
+        { ita: "correre", base: "run", past: "ran", part: "run", frase: "I like to _____ in the park." },
+        { ita: "dire", base: "say", past: "said", part: "said", frase: "What did you _____?" },
+        { ita: "vedere", base: "see", past: "saw", part: "seen", frase: "Can you _____ the mountains?" },
+        { ita: "vendere", base: "sell", past: "sold", part: "sold", frase: "They want to _____ their car." },
+        { ita: "mandare / spedire", base: "send", past: "sent", part: "sent", frase: "I will _____ you an email." },
+        { ita: "scuotere", base: "shake", past: "shook", part: "shaken", frase: "_____ the bottle before drinking." },
+        { ita: "brillare / splendere", base: "shine", past: "shone", part: "shone", frase: "The sun is _____ today." },
+        { ita: "sparare", base: "shoot", past: "shot", part: "shot", frase: "Do not _____!" },
+        { ita: "mostrare", base: "show", past: "showed", part: "shown, showed", frase: "Can you _____ me the way?" },
+        { ita: "chiudere", base: "shut", past: "shut", part: "shut", frase: "Please _____ the door." },
+        { ita: "cantare", base: "sing", past: "sang", part: "sung", frase: "She loves to _____ songs." },
+        { ita: "affondare", base: "sink", past: "sank, sunk", part: "sunk", frase: "The ship began to _____." },
+        { ita: "sedere / sedersi", base: "sit", past: "sat", part: "sat", frase: "Please _____ down." },
+        { ita: "dormire", base: "sleep", past: "slept", part: "slept", frase: "I need to _____ 8 hours." },
+        { ita: "odorare / puzzare / profumare", base: "smell", past: "smelled, smelt", part: "smelled, smelt", frase: "This flower has a sweet _____." },
+        { ita: "parlare", base: "speak", past: "spoke", part: "spoken", frase: "Can you _____ English?" },
+        { ita: "fare lo spelling", base: "spell", past: "spelled, spelt", part: "spelled, spelt", frase: "How do you _____ your name?" },
+        { ita: "spendere / trascorrere tempo", base: "spend", past: "spent", part: "spent", frase: "How do you _____ your money?" },
+        { ita: "dividere / spaccare", base: "split", past: "split", part: "split", frase: "Let's _____ the bill." },
+        { ita: "diffondere / spalmare", base: "spread", past: "spread", part: "spread", frase: "_____ some butter on bread." },
+        { ita: "stare in piedi", base: "stand", past: "stood", part: "stood", frase: "Please _____ up." },
+        { ita: "rubare", base: "steal", past: "stole", part: "stolen", frase: "Who did _____ my bike?" },
+        { ita: "nuotare", base: "swim", past: "swam", part: "swum", frase: "Can you _____ in the pool?" },
+        { ita: "spazzare / ramazzare", base: "sweep", past: "swept", part: "swept", frase: "_____ the floor, please." },
+        { ita: "prendere", base: "take", past: "took", part: "taken", frase: "_____ an umbrella with you." },
+        { ita: "insegnare", base: "teach", past: "taught", part: "taught", frase: "He wants to _____ math." },
+        { ita: "strappare", base: "tear", past: "tore", part: "torn", frase: "Don't _____ the page." },
+        { ita: "raccontare / dire", base: "tell", past: "told", part: "told", frase: "_____ me a story." },
+        { ita: "pensare", base: "think", past: "thought", part: "thought", frase: "What do you _____ about this?" },
+        { ita: "lanciare", base: "throw", past: "threw", part: "thrown", frase: "_____ the ball to me." },
+        { ita: "capire / comprendere", base: "understand", past: "understood", part: "understood", frase: "Do you _____ the lesson?" },
+        { ita: "svegliarsi / svegliare", base: "wake", past: "woke", part: "woken", frase: "I usually _____ up early." },
+        { ita: "indossare / portare", base: "wear", past: "wore", part: "worn", frase: "What will you _____ today?" },
+        { ita: "vincere", base: "win", past: "won", part: "won", frase: "We hope to _____ the match." },
+        { ita: "scrivere", base: "write", past: "wrote", part: "written", frase: "_____ your name on the paper." }
+    ];
+
+    let verbi = [...verbiIniziali].sort(() => Math.random() - 0.5);
+    let indiceCorrente = 0;
+    let inFaseDiControllo = false;
+    let streak = 0;
+    let tentativiTotali = 0;
+    let tentativiCorretti = 0;
+
+    // Gestione Tabs
+    function cambiaTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
+        
+        if(tab === 'quiz') {
+            event.target.classList.add('active');
+            document.getElementById('section-quiz').classList.add('active');
+        } else if(tab === 'timeattack') {
+            event.target.classList.add('active');
+            document.getElementById('section-timeattack').classList.add('active');
+        } else if(tab === 'dizionario') {
+            event.target.classList.add('active');
+            document.getElementById('section-dizionario').classList.add('active');
+            caricaDizionario();
+        }
+    }
+
+    // Quiz Logica
+    function caricaVerbo() {
+        const v = verbi[indiceCorrente];
+        document.getElementById("label-italiano").innerText = v.ita;
+        document.getElementById("base").value = "";
+        document.getElementById("past").value = "";
+        document.getElementById("participle").value = "";
+        
+        let feedback = document.getElementById("feedback");
+        feedback.className = "";
+        feedback.innerText = "";
+        feedback.style.display = "none";
+
+        let hintBox = document.getElementById("hint-box");
+        hintBox.style.display = "none";
+        hintBox.innerText = "";
+
+        document.getElementById("score-text").innerHTML = `Progresso: <b>${indiceCorrente + 1} / ${verbi.length}</b>`;
+        document.getElementById("action-btn").innerText = "Verifica";
+        inFaseDiControllo = false;
+        document.getElementById("base").focus();
+    }
+
+    function mostraIndizio() {
+        const v = verbi[indiceCorrente];
+        let hintBox = document.getElementById("hint-box");
+        hintBox.innerText = "💡 Indizio frase: " + v.frase;
+        hintBox.style.display = "block";
+    }
+
+    function pulisciTesto(testo) {
+        return testo.toLowerCase().replace(/\s+/g, '').trim();
+    }
+
+    function verificaCorrettezza(inputUtente, stringaCorretta) {
+        const pulitoUtente = pulisciTesto(inputUtente);
+        const opzioni = stringaCorretta.split(',').map(s => pulisciTesto(s));
+        return opzioni.includes(pulitoUtente);
+    }
+
+    function aggiornaAccuratezza() {
+        let acc = tentativiTotali === 0 ? 100 : Math.round((tentativiCorretti / tentativiTotali) * 100);
+        document.getElementById("accuracy-text").innerHTML = `Precisione: <b>${acc}%</b>`;
+        document.getElementById("streak-num").innerText = streak;
+    }
+
+    function controllaVerbo() {
+        if (inFaseDiControllo) {
+            indiceCorrente++;
+            if (indiceCorrente >= verbi.length) {
+                verbi = [...verbiIniziali].sort(() => Math.random() - 0.5);
+                indiceCorrente = 0;
+                alert("Complimenti! Hai completato tutto il mazzo di verbi. Ricominciamo!");
+            }
+            caricaVerbo();
+            return;
+        }
+
+        const v = verbi[indiceCorrente];
+        const userBase = document.getElementById("base").value;
+        const userPast = document.getElementById("past").value;
+        const userPart = document.getElementById("participle").value;
+
+        let okBase = verificaCorrettezza(userBase, v.base);
+        let okPast = verificaCorrettezza(userPast, v.past);
+        let okPart = verificaCorrettezza(userPart, v.part);
+
+        tentativiTotali++;
+        let feedbackDiv = document.getElementById("feedback");
+
+        if (okBase && okPast && okPart) {
+            tentativiCorretti++;
+            streak++;
+            feedbackDiv.className = "success";
+            feedbackDiv.innerHTML = "🎉 <b>Perfetto!</b> Ottimo lavoro.";
+            feedbackDiv.style.display = "block";
+            inFaseDiControllo = true;
+            document.getElementById("action-btn").innerText = "Prossimo ➔";
+        } else {
+            streak = 0;
+            let errori = [];
+            if (!okBase) errori.push("Base Form");
+            if (!okPast) errori.push("Past Simple");
+            if (!okPart) errori.push("Past Participle");
+
+            feedbackDiv.className = "error";
+            feedbackDiv.innerHTML = `❌ <b>Quasi!</b> Errore in: ${erroredString(errori)}<br>Corretti: <b>${v.base}</b> / <b>${v.past}</b> / <b>${v.part}</b>`;
+            feedbackDiv.style.display = "block";
+            inFaseDiControllo = true;
+            document.getElementById("action-btn").innerText = "Prossimo ➔";
+        }
+        aggiornaAccuratezza();
+    }
+
+    function erroredString(errs) { return errs.join(", "); }
+
+    function pronunciaVerbo() {
+        const v = verbi[indiceCorrente];
+        if ('speechSynthesis' in window) {
+            const utterance = new SpeechSynthesisUtterance(v.base);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // Time Attack Logica
+    let taTimer, taTimeLeft = 60, taScore = 0, currentTAVerb;
+    function avviaTimeAttack() {
+        document.getElementById('ta-start-screen').style.display = 'none';
+        document.getElementById('ta-game-screen').style.display = 'block';
+        taTimeLeft = 60; taScore = 0;
+        document.getElementById('ta-score').innerText = taScore;
+        prossimoTA();
+        
+        clearInterval(taTimer);
+        taTimer = setInterval(() => {
+            taTimeLeft--;
+            document.getElementById('timer').innerText = taTimeLeft + 's';
+            if(taTimeLeft <= 0) {
+                clearInterval(taTimer);
+                alert(`⏰ Tempo scaduto! Punteggio totale: ${taScore} verbi in 1 minuto!`);
+                document.getElementById('ta-start-screen').style.display = 'block';
+                document.getElementById('ta-game-screen').style.display = 'none';
+            }
+        }, 1000);
+    }
+
+    function prossimoTA() {
+        currentTAVerb = verbiIniziali[Math.floor(Math.random() * verbiIniziali.length)];
+        document.getElementById('ta-italiano').innerText = currentTAVerb.ita;
+        document.getElementById('ta-base').value = '';
+        document.getElementById('ta-past').value = '';
+        document.getElementById('ta-part').value = '';
+        document.getElementById('ta-base').focus();
+    }
+
+    function verificaTA() {
+        let b = document.getElementById('ta-base').value;
+        let p = document.getElementById('ta-past').value;
+        let pt = document.getElementById('ta-part').value;
+
+        if(verificaCorrettezza(b, currentTAVerb.base) && verificaCorrettezza(p, currentTAVerb.past) && verificaCorrettezza(pt, currentTAVerb.part)) {
+            taScore++;
+            document.getElementById('ta-score').innerText = taScore;
+        }
+        prossimoTA();
+    }
+
+    // Dizionario Logica
+    function caricaDizionario(filtro = '') {
+        const container = document.getElementById('dizionario-container');
+        container.innerHTML = '';
+        
+        const filtrati = verbiIniziali.filter(v => 
+            v.base.toLowerCase().includes(filtro) || v.ita.toLowerCase().includes(filtro)
+        );
+
+        filtrati.forEach(v => {
+            let item = document.createElement('div');
+            item.className = 'verb-item';
+            item.innerHTML = `
+                <div class="verb-item-info">
+                    <div class="eng">${v.base}</div>
+                    <div class="ita">${v.ita}</div>
+                </div>
+                <div class="verb-item-forms">
+                    ${v.past}<br>${v.part}
+                </div>
+            `;
+            container.appendChild(item);
+        });
+    }
+
+    function filtraDizionario() {
+        let val = document.getElementById('search-input').value.toLowerCase();
+        caricaDizionario(val);
+    }
+
+    // Event Listener globale Invio
+    document.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+            if(document.getElementById('section-quiz').classList.contains('active')) {
+                controllaVerbo();
+            } else if(document.getElementById('section-timeattack').classList.contains('active')) {
+                verificaTA();
+            }
+        }
+    });
+
+    caricaVerbo();
+</script>
+
+</body>
+</html>
