@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Esercizi Avanzati: Future & Tenses</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #f8fafc;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .back-btn:hover {
+            color: #7dd3fc;
+        }
+        h1 {
+            font-size: 2.2rem;
+            color: #38bdf8;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #0284c7;
+            color: white;
+            border-color: #38bdf8;
+        }
+        .section-exercise {
+            display: none;
+        }
+        .section-exercise.active {
+            display: block;
+        }
+        .exercise-card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn-option {
+            background: #334155;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.2s;
+        }
+        .btn-option:hover {
+            background: #475569;
+        }
+        .btn-option.correct {
+            background: #22c55e !important;
+            font-weight: bold;
+        }
+        .btn-option.wrong {
+            background: #ef4444 !important;
+        }
+        .feedback {
+            margin-top: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .reload-section {
+            text-align: center;
+            margin: 20px 0 40px 0;
+        }
+        .btn-reload {
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        .btn-reload:hover {
+            transform: scale(1.05);
+            background: #7dd3fc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <a href="index.html" class="back-btn">← Torna alla Home</a>
+        
+        <h1>Future & Tenses Hub 🎯</h1>
+        <p class="subtitle">Database pieno zeppo: 10 frasi estratte casualmente per ogni esercizio!</p>
+
+        <!-- Pulsanti per scegliere quale esercizio visualizzare -->
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab(0)">1. Will vs Won't</button>
+            <button class="tab-btn" onclick="switchTab(1)">2. Will vs Going to</button>
+            <button class="tab-btn" onclick="switchTab(2)">3. Mix Avanzato Tempi Futuri</button>
+        </div>
+
+        <!-- CONTENITORE ESERCIZIO 1 -->
+        <div class="section-exercise active" id="sec-0">
+            <div id="container-ex1"></div>
+        </div>
+
+        <!-- CONTENITORE ESERCIZIO 2 -->
+        <div class="section-exercise" id="sec-1">
+            <div id="container-ex2"></div>
+        </div>
+
+        <!-- CONTENITORE ESERCIZIO 3 -->
+        <div class="section-exercise" id="sec-2">
+            <div id="container-ex3"></div>
+        </div>
+
+        <div class="reload-section">
+            <button class="btn-reload" onclick="location.reload()">🔄 Estrai Nuove Frasi a Caso</button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATABASE MASSICCIO: OLTRE 40/50 FRASI PER OGNI SEZIONE ---
+
+        const bankEx1 = [
+            { q: "Don't worry, I _____ tell anyone your secret.", options: ["will", "won't"], answer: "won't" },
+            { q: "I'm so tired. I think I _____ go to sleep early tonight.", options: ["will", "won't"], answer: "will" },
+            { q: "Do you think it _____ rain this afternoon? Take an umbrella.", options: ["will", "won't"], answer: "will" },
+            { q: "Promise me you _____ be late again tomorrow!", options: ["will", "won't"], answer: "won't" },
+            { q: "The traffic is terrible; we _____ arrive on time.", options: ["will", "won't"], answer: "won't" },
+            { q: "I'm sure you _____ love this movie, it's hilarious!", options: ["will", "won't"], answer: "will" },
+            { q: "He broke his leg, so he _____ play in the match on Sunday.", options: ["will", "won't"], answer: "won't" },
+            { q: "Give me your keys. I _____ drive, you've had too much to drink.", options: ["will", "won't"], answer: "will" },
+            { q: "If you don't study hard, you _____ pass the exam.", options: ["will", "won't"], answer: "won't" },
+            { q: "It's too dark in here. I _____ turn on the lights.", options: ["will", "won't"], answer: "will" },
+            { q: "She is on a strict diet, so she _____ eat that cake.", options: ["will", "won't"], answer: "won't" },
+            { q: "Hold on, I _____ help you carry those heavy bags.", options: ["will", "won't"], answer: "will" },
+            { q: "I'm freezing. I _____ close the window.", options: ["will", "won't"], answer: "will" },
+            { q: "No, I _____ lend you money anymore; you never pay me back.", options: ["will", "won't"], answer: "won't" },
+            { q: "Trust me, everything _____ be fine in the end.", options: ["will", "won't"], answer: "will" },
+            { q: "Shut up or I _____ tell the teacher!", options: ["will", "won't"], answer: "will" },
+            { q: "She's very stubborn, she _____ change her mind easily.", options: ["will", "won't"], answer: "won't" },
+            { q: "I promise I _____ forget your birthday.", options: ["will", "won't"], answer: "won't" },
+            { q: "Who do you think _____ win the competition?", options: ["will", "won't"], answer: "will" },
+            { q: "I'm hungry, I _____ grab something from the fridge.", options: ["will", "won't"], answer: "will" },
+            { q: "He _____ cooperate with the police without a lawyer.", options: ["will", "won't"], answer: "won't" },
+            { q: "I bet it _____ snow in the mountains next week.", options: ["will", "won't"], answer: "will" },
+            { q: "You _____ regret buying such an expensive car.", options: ["will", "won't"], answer: "will" },
+            { q: "They _____ accept our offer, it's too low.", options: ["will", "won't"], answer: "won't" },
+            { q: "Wait a minute, I _____ check if the door is locked.", options: ["will", "won't"], answer: "will" },
+            { q: "She _____ speak to him after what he did.", options: ["will", "won't"], answer: "won't" },
+            { q: "I suppose they _____ arrive around 8 PM.", options: ["will", "won't"], answer: "will" },
+            { q: "Nothing _____ stop us from reaching our goal.", options: ["will", "won't"], answer: "will" },
+            { q: "I'm sure he _____ remember to bring the tickets.", options: ["will", "won't"], answer: "will" },
+            { q: "We _____ surrender without a fight!", options: ["will", "won't"], answer: "won't" },
+            { q: "I know you are upset, but you _____ feel better tomorrow.", options: ["will", "won't"], answer: "will" },
+            { q: "He is so lazy, he _____ finish this project on time.", options: ["will", "won't"], answer: "won't" },
+            { q: "Do you think people _____ live underwater in the future?", options: ["will", "won't"], answer: "will" },
+            { q: "I swear I _____ tell anyone what you did.", options: ["will", "won't"], answer: "won't" },
+            { q: "The soup needs more salt. I _____ add some.", options: ["will", "won't"], answer: "will" },
+            { q: "Your secret is safe with me. I _____ tell a soul.", options: ["will", "won't"], answer: "won't" },
+            { q: "It's starting to pour. We _____ get soaking wet if we go out now.", options: ["will", "won't"], answer: "will" },
+            { q: "She is too proud to apologize. She _____ admit she was wrong.", options: ["will", "won't"], answer: "won't" },
+            { q: "Leave it to me, I _____ handle the situation.", options: ["will", "won't"], answer: "will" },
+            { q: "If you touch that wire, you _____ get a shock.", options: ["will", "won't"], answer: "will" }
+        ];
+
+        const bankEx2 = [
+            { q: "Look at those dark clouds! It _____ rain.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "“I forgot my wallet!” — “Don't worry, I _____ pay for the pizza.”", options: ["will", "am going to"], answer: "will" },
+            { q: "My suitcase is packed. I _____ fly to London tomorrow morning.", options: ["will", "am going to"], answer: "am going to" },
+            { q: "I think artificial intelligence _____ change the world in 10 years.", options: ["will", "is going to"], answer: "will" },
+            { q: "Be careful! You _____ drop that glass!", options: ["will", "are going to"], answer: "are going to" },
+            { q: "“Why are you turning on the TV?” — “I _____ watch the news.”", options: ["will", "am going to"], answer: "am going to" },
+            { q: "I'm hungry. I think I _____ order a burger.", options: ["will", "am going to"], answer: "will" },
+            { q: "She _____ have a baby in July. (Ha già la data concordata)", options: ["will", "is going to"], answer: "is going to" },
+            { q: "Perhaps we _____ visit Paris next summer, but we haven't decided.", options: ["will", "are going to"], answer: "will" },
+            { q: "Watch out! That dog _____ bite you!", options: ["will", "is going to"], answer: "is going to" },
+            { q: "Look at the driver! He _____ crash into that tree!", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I've decided that I _____ start a new diet on Monday.", options: ["will", "am going to"], answer: "am going to" },
+            { q: "The phone is ringing. I _____ answer it.", options: ["will", "am going to"], answer: "will" },
+            { q: "We have bought the tickets. We _____ see a concert on Saturday.", options: ["will", "are going to"], answer: "are going to" },
+            { q: "Do you think humans _____ live on Mars one day?", options: ["will", "are going to"], answer: "will" },
+            { q: "My stomach feels weird. I think I _____ throw up.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "He has enrolled in a gym. He _____ get fit.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I promise I _____ tell anyone.", options: ["will", "am going to"], answer: "will" },
+            { q: "Look at how fast he is running! He _____ win the race.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "It's getting late. I think I _____ go home now.", options: ["will", "am going to"], answer: "will" },
+            { q: "The sky is completely clear. It _____ be a sunny day.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "“I'm really cold.” — “I _____ turn up the heating.”", options: ["will", "am going to"], answer: "will" },
+            { q: "Look at the hole in the boat! It _____ sink!", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I believe technology _____ solve climate change eventually.", options: ["will", "is going to"], answer: "will" },
+            { q: "We have booked our flight to Spain. We _____ leave on Friday.", options: ["will", "are going to"], answer: "are going to" },
+            { q: "That table looks unstable. It _____ fall over!", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I'm tired. I think I _____ go to bed early.", options: ["will", "am going to"], answer: "will" },
+            { q: "She has bought flour and eggs. She _____ bake a cake.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I'm sure you _____ pass your exam tomorrow.", options: ["will", "are going to"], answer: "will" },
+            { q: "Look at those kids running near the pool! They _____ slip.", options: ["will", "are going to"], answer: "are going to" },
+            { q: "The doorbell is ringing. I _____ open the door.", options: ["will", "am going to"], answer: "will" },
+            { q: "He has practiced a lot; he _____ play very well tonight.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "Do you reckon it _____ snow tomorrow?", options: ["will", "is going to"], answer: "will" },
+            { q: "Take your umbrella, it _____ rain in a minute.", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I've made up my mind. I _____ quit my job.", options: ["will", "am going to"], answer: "am going to" },
+            { q: "Who do you think _____ win the next elections?", options: ["will", "is going to"], answer: "will" },
+            { q: "Look at that car driving so fast! It _____ crash!", options: ["will", "is going to"], answer: "is going to" },
+            { q: "I'm thirsty. I _____ get a glass of water.", options: ["will", "am going to"], answer: "will" },
+            { q: "They have rented a truck because they _____ move house.", options: ["will", "are going to"], answer: "are going to" },
+            { q: "I promise I _____ help you with your homework.", options: ["will", "am going to"], answer: "will" }
+        ];
+
+        const bankEx3 = [
+            { q: "The train to Milan _____ at 8:45 AM every day. (Orario ufficiale)", options: ["leaves", "will leave", "is leaving"], answer: "leaves" },
+            { q: "We _____ a party this Saturday. Everything is already organized.", options: ["will have", "are having", "have"], answer: "are having" },
+            { q: "I hope humans _____ land on Mars by 2040.", options: ["will land", "are landing", "land"], answer: "will land" },
+            { q: "What time _____ your flight _____ tomorrow?", options: ["does / leave", "will / leave", "is / leaving"], answer: "does / leave" },
+            { q: "Next year, my brother _____ study in Spain. (Ha già i biglietti)", options: ["will", "is going to", "studies"], answer: "is going to" },
+            { q: "I'm tired, so I think I _____ go straight to bed.", options: ["will", "am going to", "go"], answer: "will" },
+            { q: "Look at the score! They _____ win the championship!", options: ["will", "are going to", "win"], answer: "are going to" },
+            { q: "The sun _____ rise tomorrow at 6:30.", options: ["will", "is going to", "rises"], answer: "rises" },
+            { q: "Our English lesson _____ at 9:00 tomorrow morning.", options: ["starts", "will start", "is starting"], answer: "starts" },
+            { q: "I can't meet you tonight because I _____ out with my friends.", options: ["go", "will go", "am going"], answer: "am going" },
+            { q: "Scientists predict that sea levels _____ rise in the next decade.", options: ["will", "are going to", "rise"], answer: "will" },
+            { q: "The cinema doors _____ open at 8 PM sharp.", options: ["open", "will open", "are opening"], answer: "open" },
+            { q: "Be careful with that box, or you _____ break it.", options: ["will", "are going to", "break"], answer: "will" },
+            { q: "She has already booked her flight. She _____ leave on Friday.", options: ["is going to", "will", "leaves"], answer: "is going to" },
+            { q: "What _____ you _____ do when you finish school?", options: ["are / going to", "will / do", "do / do"], answer: "are / going to" },
+            { q: "I'm sure you _____ pass the driving test easily.", options: ["will", "are going to", "pass"], answer: "will" },
+            { q: "The museum _____ open at 10 AM on weekdays according to the timetable.", options: ["opens", "will open", "is opening"], answer: "opens" },
+            { q: "Look at those grey clouds, it _____ pour down in a second.", options: ["is going to", "will", "pours"], answer: "is going to" },
+            { q: "I promise I _____ pay you back next week.", options: ["will", "am going to", "pay"], answer: "will" },
+            { q: "We _____ dinner with my grandparents tonight. We have a reservation.", options: ["are having", "will have", "have"], answer: "are having" },
+            { q: "The bus _____ at 7:15 every morning, so don't be late.", options: ["arrives", "will arrive", "is arriving"], answer: "arrives" },
+            { q: "I think people _____ work from home much more in the future.", options: ["will", "are going to", "work"], answer: "will" },
+            { q: "Watch out! You _____ spill your coffee!", options: ["are going to", "will", "spill"], answer: "are going to" },
+            { q: "Next Monday is a holiday. What _____ you _____ do?", options: ["are / going to", "will / do", "do / do"], answer: "are / going to" },
+            { q: "The plane to New York _____ off at 3 PM.", options: ["takes", "will take", "is taking"], answer: "takes" },
+            { q: "I am thirsty, I think I _____ get a soda.", options: ["will", "am going to", "get"], answer: "will" },
+            { q: "Look at him driving like a maniac! He _____ crash.", options: ["is going to", "will", "crashes"], answer: "is going to" },
+            { q: "My parents _____ visit us this weekend. Everything is planned.", options: ["are visiting", "will visit", "visit"], answer: "are visiting" },
+            { q: "Do you think robots _____ replace teachers one day?", options: ["will", "are going to", "replace"], answer: "will" },
+            { q: "Hurry up! The show _____ start in five minutes.", options: ["is about to", "will", "starts"], answer: "starts" },
+            { q: "I've packed my bags. I _____ travel to Rome tomorrow.", options: ["am going to", "will", "travel"], answer: "am going to" },
+            { q: "She _____ be thirty years old next month.", options: ["will", "is going to", "is"], answer: "will" },
+            { q: "What time _____ the match _____ tonight?", options: ["does / start", "will / start", "is / starting"], answer: "does / start" },
+            { q: "I'm sure you _____ love the present I bought you.", options: ["will", "are going to", "love"], answer: "will" },
+            { q: "Look at the ice on the road! It _____ be very slippery.", options: ["is going to", "will", "is"], answer: "is going to" },
+            { q: "The bank _____ close at 4:30 PM sharp every day.", options: ["closes", "will close", "is closing"], answer: "closes" },
+            { q: "I can't come to the party because I _____ study for an exam.", options: ["am going to", "will", "study"], answer: "am going to" },
+            { q: "Perhaps we _____ buy a new car next year, but we aren't sure.", options: ["will", "are going to", "buy"], answer: "will" },
+            { q: "The shop assistant _____ help you in a moment.", options: ["will", "is going to", "helps"], answer: "will" },
+            { q: "Look at the score! Our team _____ win the cup!", options: ["is going to", "will", "wins"], answer: "is going to" }
+        ];
+
+        // --- FUNZIONE PER ESTRARRE 10 FRASI CASUALI DA OGNI DATABASE ---
+        function loadExercises() {
+            renderRandomQuiz(bankEx1, 'container-ex1', 5, 'ex1'); 
+            renderRandomQuiz(bankEx2, 'container-ex2', 5, 'ex2'); 
+            renderRandomQuiz(bankEx3, 'container-ex3', 5, 'ex3'); 
+        }
+
+        function renderRandomQuiz(sourceArray, containerId, count, prefix) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            const shuffled = [...sourceArray].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, Math.min(count, shuffled.length));
+
+            selected.forEach((item, index) => {
+                let optionsHtml = '';
+                const shuffledOpts = [...item.options].sort(() => 0.5 - Math.random());
+
+                shuffledOpts.forEach(opt => {
+                    const isCorrect = (opt === item.answer);
+                    optionsHtml += `<button class="btn-option" onclick="checkAnswer(this, ${isCorrect}, '${prefix}-${index}')">${opt}</button>`;
+                });
+
+                const card = document.createElement('div');
+                card.className = 'exercise-card';
+                card.id = `${prefix}-${index}`;
+                card.innerHTML = `
+                    <div class="question">${index + 1}. ${item.q}</div>
+                    <div class="options">${optionsHtml}</div>
+                    <div class="feedback"></div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function checkAnswer(button, isCorrect, cardId) {
+            const card = document.getElementById(cardId);
+            const buttons = card.querySelectorAll('.btn-option');
+            const feedback = card.querySelector('.feedback');
+
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                button.classList.add('correct');
+                feedback.style.color = '#22c55e';
+                feedback.textContent = 'Esatto! Ottimo colpo 🎉';
+            } else {
+                button.classList.add('wrong');
+                feedback.style.color = '#ef4444';
+                feedback.textContent = 'Ops, non è corretto!';
+            }
+        }
+
+        function switchTab(index) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const sections = document.querySelectorAll('.section-exercise');
+
+            tabs.forEach(t => t.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('active'));
+
+            tabs[index].classList.add('active');
+            sections[index].classList.add('active');
+        }
+
+        window.onload = loadExercises;
+    </script>
+
+</body>
+</html>
