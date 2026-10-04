@@ -3,136 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Hub - Esercizi</title>
+    <title>English Hub - Portale Didattico</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border: #334155;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
+
         body {
-            background: linear-gradient(135deg, #0f172a, #1e293b);
-            color: #f8fafc;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
-        .container {
-            max-width: 800px;
-            width: 100%;
+
+        header {
             text-align: center;
+            margin-bottom: 50px;
         }
-        h1 {
-            font-size: 2.8rem;
+
+        header h1 {
+            font-size: 2.5rem;
             margin-bottom: 10px;
-            color: #38bdf8;
-            letter-spacing: -1px;
+            color: var(--accent);
         }
-        p.subtitle {
+
+        header p {
+            color: var(--text-muted);
             font-size: 1.1rem;
-            color: #94a3b8;
-            margin-bottom: 40px;
         }
-        .grid {
+
+        .container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
             width: 100%;
+            max-width: 1000px;
         }
+
         .card {
-            background: rgba(30, 41, 59, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 30px 20px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
             text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            color: inherit;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .card:hover {
+
+        .card.active:hover {
             transform: translateY(-5px);
-            border-color: #38bdf8;
-            box-shadow: 0 10px 20px -5px rgba(56, 189, 248, 0.3);
+            border-color: var(--accent);
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
         }
-        .card.active {
-            background: linear-gradient(135deg, #0284c7, #0369a1);
-            border-color: #38bdf8;
+
+        .card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
-        .card h2 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text-color);
         }
+
         .card p {
-            font-size: 0.9rem;
-            color: #cbd5e1;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
             margin-bottom: 20px;
         }
+
         .badge {
-            display: inline-block;
+            align-self: flex-start;
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
-            font-weight: bold;
-            align-self: center;
+            font-weight: 600;
         }
-        .badge.online {
-            background: #22c55e;
-            color: white;
-        }
+
         .badge.coming {
-            background: #475569;
-            color: #94a3b8;
+            background-color: rgba(148, 163, 184, 0.1);
+            color: var(--text-muted);
         }
+
         footer {
-            margin-top: 50px;
-            font-size: 0.85rem;
-            color: #64748b;
+            margin-top: auto;
+            padding-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
+    <header>
+        <h1>English Hub</h1>
+        <p>Scegli l'argomento e mettiti alla prova con gli esercizi interattivi</p>
+    </header>
+
     <div class="container">
-        <h1>English Hub 🚀</h1>
-        <p class="subtitle">Scegli la sezione di esercizi e migliora il tuo inglese</p>
-
-        <div class="grid">
-            <!-- SCHEDA VERBI IRREGOLARI (ATTIVA) -->
-            <a href="verbi_irregolari.html" class="card active">               <div>
-                    <h2>Verbi Irregolari</h2>
-                    <p>Allenati con i verbi irregolari inglesi in modo interattivo.</p>
-                </div>
-                <span class="badge online">DISPONIBILE ORA</span>
-            </a>
-
-            <!-- SCHEDA PRESENT SIMPLE (COMING SOON) -->
-            <div class="card" style="opacity: 0.7; cursor: default;">
-                <div>
-                    <h2>Present Simple</h2>
-                    <p>Affermative, negative, domande e la regola della terza persona -S.</p>
-                </div>
-                <span class="badge coming">COMING SOON ⏳</span>
+        <!-- Scheda Verbi Irregolari -->
+        <a href="verbi.html" class="card active">
+            <div>
+                <h3>Verbi Irregolari</h3>
+                <p>Ripassa i verbi irregolari fondamentali e testa la tua preparazione con quiz casuali mirati.</p>
             </div>
-
-            <!-- Scheda Future with Will sbloccata -->
-            <a href="will.html" class="card active">
-                <h3>Future with Will</h3>
-            <p>Regole ed esercizi interattivi sul futuro con will, won't e confronti.</p>
             <span class="badge">Disponibile ora ✨</span>
         </a>
-        </div>
 
-        <footer>
-            Creato da Luca • Powered by GitHub Pages
-        </footer>
+        <!-- Scheda Future with Will -->
+        <a href="will.html" class="card active">
+            <div>
+                <h3>Future with Will</h3>
+                <p>Regole ed esercizi interattivi sul futuro con will, won't e confronti in blocchi da 5 frasi.</p>
+            </div>
+            <span class="badge">Disponibile ora ✨</span>
+        </a>
+
+        <!-- Scheda Futura (Coming Soon) -->
+        <div class="card disabled">
+            <div>
+                <h3>Prossimo Argomento</h3>
+                <p>Nuovi argomenti di grammatiche e test interattivi in arrivo nelle prossime settimane.</p>
+            </div>
+            <span class="badge coming">COMING SOON ⏳</span>
+        </div>
     </div>
+
+    <footer>
+        <p>&copy; 2026 English Hub • Creato per lo studio e la pratica</p>
+    </footer>
 
 </body>
 </html>
