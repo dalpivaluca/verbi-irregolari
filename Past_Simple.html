@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Past Simple Hub - English Hub</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border: #334155;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .back-nav {
+            align-self: flex-start;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto 20px auto;
+        }
+
+        .back-btn {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-hover);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border-color: var(--accent);
+        }
+
+        .tab-btn.mix-tab {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .tab-btn.mix-tab.active {
+            background-color: #f59e0b;
+            color: var(--bg-color);
+            border-color: #f59e0b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .instructions {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .question-item {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .sentence-container {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inline-input {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--accent);
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 6px 12px;
+            font-size: 1.05rem;
+            outline: none;
+            width: 210px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .inline-input::placeholder {
+            color: rgba(148, 163, 184, 0.45);
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        .inline-input:focus {
+            border-color: var(--accent-hover);
+            background-color: rgba(56, 189, 248, 0.05);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-mix {
+            background-color: #f59e0b;
+        }
+        .btn-mix:hover {
+            background-color: #d97706;
+        }
+
+        .feedback {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-display {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="back-nav">
+        <a href="index.html" class="back-btn">← Torna alla Home</a>
+    </div>
+
+    <header>
+        <h1>Past Simple Hub</h1>
+        <p>Esercizi sul Past Simple: completa le frasi inserendo la forma corretta (affermazioni, negazioni, domande e mix challenge).</p>
+    </header>
+
+    <div class="container">
+        <!-- Tabs Navigazione -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('ex1', event)">1. Affermative</button>
+            <button class="tab-btn" onclick="switchTab('ex2', event)">2. Negative</button>
+            <button class="tab-btn" onclick="switchTab('ex3', event)">3. Interrogative</button>
+            <button class="tab-btn mix-tab" onclick="switchTab('ex4', event)">🔥 4. Mix Challenge</button>
+        </div>
+
+        <!-- Sezione 1: Affermative -->
+        <div id="ex1" class="tab-content active">
+            <div class="exercise-card">
+                <h2>1. Forma Affermativa</h2>
+                <p class="instructions">Completa la frase inserendo il verbo coniugato al Past Simple.</p>
+                <div id="container-ex1"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex1">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 2: Negative -->
+        <div id="ex2" class="tab-content">
+            <div class="exercise-card">
+                <h2>2. Forma Negativa</h2>
+                <p class="instructions">Inserisci la forma negativa contratta (didn't) e il verbo alla forma base.</p>
+                <div id="container-ex2"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex2">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 3: Interrogative -->
+        <div id="ex3" class="tab-content">
+            <div class="exercise-card">
+                <h2>3. Forma Interrogativa</h2>
+                <p class="instructions">Scrivi la domanda corretta completando con l'ausiliare (Did), il soggetto e la forma base del verbo.</p>
+                <div id="container-ex3"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex3">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 4: Mix Challenge -->
+        <div id="ex4" class="tab-content">
+            <div class="exercise-card">
+                <h2>🔥 4. Mix Challenge (Tutte le forme)</h2>
+                <p class="instructions">Frasi miste sul Past Simple.</p>
+                <div id="container-ex4"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex4" style="color: #f59e0b;">Punteggio: 0 / 5</span>
+                    <button class="btn btn-mix" onclick="loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4')">🔄 Altre 5 frasi miste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 English Hub • Past Simple Practice</p>
+    </footer>
+
+    <script>
+        // Bank 1: 80 Affermative Past Simple uniche
+        const bankEx1 = [
+            { textBefore: "I", textAfter: "to the cinema yesterday.", hint: "(go)", a: "went" },
+            { textBefore: "You", textAfter: "a great movie last night.", hint: "(see)", a: "saw" },
+            { textBefore: "He", textAfter: "football on Sunday.", hint: "(play)", a: "played" },
+            { textBefore: "She", textAfter: "a delicious cake.", hint: "(make)", a: "made" },
+            { textBefore: "It", textAfter: "all day long.", hint: "(rain)", a: "rained" },
+            { textBefore: "We", textAfter: "hard for the exam.", hint: "(study)", a: "studied" },
+            { textBefore: "They", textAfter: "to music in the car.", hint: "(listen)", a: "listened" },
+            { textBefore: "My brother", textAfter: "his bike to school.", hint: "(ride)", a: "rode" },
+            { textBefore: "The children", textAfter: "in the garden.", hint: "(play)", a: "played" },
+            { textBefore: "My mother", textAfter: "dinner at 8 PM.", hint: "(cook)", a: "cooked" },
+            { textBefore: "The cat", textAfter: "on the sofa.", hint: "(sleep)", a: "slept" },
+            { textBefore: "You and I", textAfter: "a pizza last night.", hint: "(eat)", a: "ate" },
+            { textBefore: "The teacher", textAfter: "an interesting story.", hint: "(tell)", a: "told" },
+            { textBefore: "My friends", textAfter: "to Rome last summer.", hint: "(travel)", a: "travelled" },
+            { textBefore: "The sun", textAfter: "brightly yesterday.", hint: "(shine)", a: "shone" },
+            { textBefore: "I", textAfter: "a letter to my uncle.", hint: "(write)", a: "wrote" },
+            { textBefore: "You", textAfter: "very fast in the race.", hint: "(run)", a: "ran" },
+            { textBefore: "He", textAfter: "in the cold lake.", hint: "(swim)", a: "swam" },
+            { textBefore: "She", textAfter: "a red dress to the party.", hint: "(wear)", a: "wore" },
+            { textBefore: "We", textAfter: "lunch in a nice café.", hint: "(have)", a: "had" },
+            { textBefore: "They", textAfter: "their homework quickly.", hint: "(do)", a: "did" },
+            { textBefore: "The baby", textAfter: "all night.", hint: "(cry)", a: "cried" },
+            { textBefore: "Paul", textAfter: "a new car last week.", hint: "(buy)", a: "bought" },
+            { textBefore: "The birds", textAfter: "away.", hint: "(fly)", a: "flew" },
+            { textBefore: "I", textAfter: "heavy clothes yesterday.", hint: "(wear)", a: "wore" },
+            { textBefore: "You", textAfter: "a mistake.", hint: "(make)", a: "made" },
+            { textBefore: "Mark", textAfter: "computer games all day.", hint: "(play)", a: "played" },
+            { textBefore: "Anna", textAfter: "to pop music.", hint: "(listen)", a: "listened" },
+            { textBefore: "We", textAfter: "our living room blue.", hint: "(paint)", a: "painted" },
+            { textBefore: "The students", textAfter: "to the professor.", hint: "(listen)", a: "listened" },
+            { textBefore: "My dad", textAfter: "the newspaper.", hint: "(read)", a: "read" },
+            { textBefore: "The phone", textAfter: "during dinner.", hint: "(ring)", a: "rang" },
+            { textBefore: "I", textAfter: "to my boss on the phone.", hint: "(speak)", a: "spoke" },
+            { textBefore: "You", textAfter: "very quietly.", hint: "(speak)", a: "spoke" },
+            { textBefore: "He", textAfter: "his bedroom on Saturday.", hint: "(clean)", a: "cleaned" },
+            { textBefore: "She", textAfter: "a nice song.", hint: "(sing)", a: "sang" },
+            { textBefore: "It", textAfter: "very cold last night.", hint: "(get)", a: "got" },
+            { textBefore: "We", textAfter: "our grandparents.", hint: "(visit)", a: "visited" },
+            { textBefore: "They", textAfter: "a new bridge.", hint: "(build)", a: "built" },
+            { textBefore: "The dog", hint: "(bark)", textAfter: "at the postman.", a: "barked" },
+            { textBefore: "I", textAfter: "for my keys everywhere.", hint: "(look)", a: "looked" },
+            { textBefore: "You", textAfter: "so well at the party.", hint: "(dance)", a: "danced" },
+            { textBefore: "Tom", textAfter: "orange juice.", hint: "(drink)", a: "drank" },
+            { textBefore: "Lucy", textAfter: "her hair.", hint: "(wash)", a: "washed" },
+            { textBefore: "We", textAfter: "our bags for the trip.", hint: "(pack)", a: "packed" },
+            { textBefore: "The men", textAfter: "hard at the office.", hint: "(work)", a: "worked" },
+            { textBefore: "A cold wind", textAfter: ".", hint: "(blow)", a: "blew" },
+            { textBefore: "I", textAfter: "an important email.", hint: "(send)", a: "sent" },
+            { textBefore: "You", textAfter: "a nice story.", hint: "(tell)", a: "told" },
+            { textBefore: "John", textAfter: "his teeth.", hint: "(brush)", a: "brushed" },
+            { textBefore: "Sara", textAfter: "a nice picture.", hint: "(draw)", a: "drew" },
+            { textBefore: "We", textAfter: "football outside.", hint: "(play)", a: "played" },
+            { textBefore: "The horses", textAfter: "in the field.", hint: "(run)", a: "ran" },
+            { textBefore: "I", textAfter: "to the radio.", hint: "(listen)", a: "listened" },
+            { textBefore: "You", textAfter: "a heavy box.", hint: "(carry)", a: "carried" },
+            { textBefore: "He", textAfter: "his lunch quickly.", hint: "(eat)", a: "ate" },
+            { textBefore: "She", textAfter: "Spanish last year.", hint: "(learn)", a: "learned" },
+            { textBefore: "The river", textAfter: "very fast after the storm.", hint: "(flow)", a: "flowed" },
+            { textBefore: "We", textAfter: "our summer holiday.", hint: "(plan)", a: "planned" },
+            { textBefore: "They", textAfter: "groceries in town.", hint: "(shop)", a: "shopped" },
+            { textBefore: "I", textAfter: "in a big hotel.", hint: "(stay)", a: "stayed" },
+            { textBefore: "You", textAfter: "delicious food.", hint: "(taste)", a: "tasted" },
+            { textBefore: "The mechanic", textAfter: "the engine.", hint: "(fix)", a: "fixed" },
+            { textBefore: "The chef", textAfter: "a new recipe.", hint: "(try)", a: "tried" },
+            { textBefore: "We", textAfter: "to catch the train.", hint: "(hurry)", a: "hurried" },
+            { textBefore: "They", textAfter: "a lot of noise.", hint: "(make)", a: "made" },
+            { textBefore: "I", textAfter: "at the map.", hint: "(look)", a: "looked" },
+            { textBefore: "You", textAfter: "a good point.", hint: "(make)", a: "made" },
+            { textBefore: "He", textAfter: "a grey suit.", hint: "(wear)", a: "wore" },
+            { textBefore: "She", textAfter: "the front door.", hint: "(open)", a: "opened" },
+            { textBefore: "It", textAfter: "dark very early.", hint: "(get)", a: "got" },
+            { textBefore: "We", textAfter: "a barbecue on Saturday.", hint: "(have)", a: "had" },
+            { textBefore: "They", textAfter: "old friends.", hint: "(meet)", a: "met" },
+            { textBefore: "I", textAfter: "my favorite song.", hint: "(sing)", a: "sang" },
+            { textBefore: "You", textAfter: "a wonderful game.", hint: "(play)", a: "played" },
+            { textBefore: "The train", textAfter: "on time.", hint: "(arrive)", a: "arrived" },
+            { textBefore: "The plane", textAfter: "safely.", hint: "(land)", a: "landed" },
+            { textBefore: "We", textAfter: "good progress.", hint: "(make)", a: "made" },
+            { textBefore: "They", textAfter: "a short break.", hint: "(take)", a: "took" },
+            { textBefore: "I", textAfter: "ready for the journey.", hint: "(get)", a: "got" }
+        ];
+
+        // Bank 2: 80 Negative Past Simple uniche
+        const bankEx2 = [
+            { textBefore: "I", textAfter: "to music yesterday.", hint: "(listen)", a: "didn't listen" },
+            { textBefore: "You", textAfter: "attention in class.", hint: "(pay)", a: "didn't pay" },
+            { textBefore: "He", textAfter: "hard yesterday.", hint: "(work)", a: "didn't work" },
+            { textBefore: "She", textAfter: "a red coat.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "It", textAfter: "last night.", hint: "(snow)", a: "didn't snow" },
+            { textBefore: "We", textAfter: "television.", hint: "(watch)", a: "didn't watch" },
+            { textBefore: "They", textAfter: "football on Monday.", hint: "(play)", a: "didn't play" },
+            { textBefore: "My friend", textAfter: "English with me.", hint: "(speak)", a: "didn't speak" },
+            { textBefore: "The children", textAfter: "in the street.", hint: "(run)", a: "didn't run" },
+            { textBefore: "Tom", textAfter: "his homework.", hint: "(do)", a: "didn't do" },
+            { textBefore: "I", textAfter: "any coffee.", hint: "(drink)", a: "didn't drink" },
+            { textBefore: "You", textAfter: "the truth.", hint: "(tell)", a: "didn't tell" },
+            { textBefore: "She", textAfter: "meat yesterday.", hint: "(eat)", a: "didn't eat" },
+            { textBefore: "We", textAfter: "fast enough.", hint: "(walk)", a: "didn't walk" },
+            { textBefore: "They", textAfter: "in the sea.", hint: "(swim)", a: "didn't swim" },
+            { textBefore: "The dog", textAfter: ".", hint: "(bark)", a: "didn't bark" },
+            { textBefore: "My mother", textAfter: "dinner last night.", hint: "(cook)", a: "didn't cook" },
+            { textBefore: "The sun", textAfter: "yesterday.", hint: "(shine)", a: "didn't shine" },
+            { textBefore: "I", textAfter: "well yesterday.", hint: "(feel)", a: "didn't feel" },
+            { textBefore: "You", textAfter: "to me.", hint: "(listen)", a: "didn't listen" },
+            { textBefore: "He", textAfter: "a hat.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "She", textAfter: "the book.", hint: "(read)", a: "didn't read" },
+            { textBefore: "We", textAfter: "any noise.", hint: "(make)", a: "didn't make" },
+            { textBefore: "The students", textAfter: "tests yesterday.", hint: "(write)", a: "didn't write" },
+            { textBefore: "My dad", textAfter: "the car.", hint: "(drive)", a: "didn't drive" },
+            { textBefore: "The baby", textAfter: ".", hint: "(cry)", a: "didn't cry" },
+            { textBefore: "I", textAfter: "a tie.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "You", textAfter: "the rules.", hint: "(follow)", a: "didn't follow" },
+            { textBefore: "He", textAfter: "computer games.", hint: "(play)", a: "didn't play" },
+            { textBefore: "She", textAfter: "piano.", hint: "(practice)", a: "didn't practice" },
+            { textBefore: "We", textAfter: "any plans.", hint: "(make)", a: "didn't make" },
+            { textBefore: "They", textAfter: "hard.", hint: "(study)", a: "didn't study" },
+            { textBefore: "The wind", textAfter: ".", hint: "(blow)", a: "didn't blow" },
+            { textBefore: "I", textAfter: "glasses.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "You", textAfter: "careful.", hint: "(be)", a: "weren't" },
+            { textBefore: "Mark", textAfter: "his room.", hint: "(clean)", a: "didn't clean" },
+            { textBefore: "Anna", textAfter: "to the party.", hint: "(come)", a: "didn't come" },
+            { textBefore: "We", textAfter: "any mistakes.", hint: "(make)", a: "didn't make" },
+            { textBefore: "The phone", textAfter: ".", hint: "(ring)", a: "didn't ring" },
+            { textBefore: "I", textAfter: "shoes.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "You", textAfter: "the guitar.", hint: "(play)", a: "didn't play" },
+            { textBefore: "He", textAfter: "his lunch.", hint: "(eat)", a: "didn't eat" },
+            { textBefore: "She", textAfter: "her coat.", hint: "(take)", a: "didn't take" },
+            { textBefore: "It", textAfter: "properly.", hint: "(work)", a: "didn't work" },
+            { textBefore: "We", textAfter: "any cheese.", hint: "(buy)", a: "didn't buy" },
+            { textBefore: "They", textAfter: "in the office.", hint: "(sit)", a: "didn't sit" },
+            { textBefore: "The cat", textAfter: "milk.", hint: "(drink)", a: "didn't drink" },
+            { textBefore: "I", textAfter: "anything special.", hint: "(do)", a: "didn't do" },
+            { textBefore: "You", textAfter: "on time.", hint: "(arrive)", a: "didn't arrive" },
+            { textBefore: "John", textAfter: "his jacket.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "Sara", textAfter: "coffee.", hint: "(drink)", a: "didn't drink" },
+            { textBefore: "We", textAfter: "any arguments.", hint: "(start)", a: "didn't start" },
+            { textBefore: "The girls", textAfter: "tennis.", hint: "(play)", a: "didn't play" },
+            { textBefore: "I", textAfter: "a hat yesterday.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "You", textAfter: "the door.", hint: "(lock)", a: "didn't lock" },
+            { textBefore: "He", textAfter: "his bike.", hint: "(ride)", a: "didn't ride" },
+            { textBefore: "She", textAfter: "a song.", hint: "(sing)", a: "didn't sing" },
+            { textBefore: "The train", textAfter: "on time.", hint: "(arrive)", a: "didn't arrive" },
+            { textBefore: "We", textAfter: "any risks.", hint: "(take)", a: "didn't take" },
+            { textBefore: "They", textAfter: "their lunch.", hint: "(eat)", a: "didn't eat" },
+            { textBefore: "I", textAfter: "fast.", hint: "(run)", a: "didn't run" },
+            { textBefore: "You", textAfter: "the truth.", hint: "(speak)", a: "didn't speak" },
+            { textBefore: "The mechanic", textAfter: "the car.", hint: "(fix)", a: "didn't fix" },
+            { textBefore: "The chef", textAfter: "soup.", hint: "(cook)", a: "didn't cook" },
+            { textBefore: "We", textAfter: "any problems.", hint: "(have)", a: "didn't have" },
+            { textBefore: "They", textAfter: "the instructions.", hint: "(read)", a: "didn't read" },
+            { textBefore: "I", textAfter: "at the screen.", hint: "(look)", a: "didn't look" },
+            { textBefore: "You", textAfter: "a sweater.", hint: "(wear)", a: "didn't wear" },
+            { textBefore: "He", textAfter: "his hands.", hint: "(wash)", a: "didn't wash" },
+            { textBefore: "She", textAfter: "a letter.", hint: "(write)", a: "didn't write" },
+            { textBefore: "It", textAfter: "cold.", hint: "(get)", a: "didn't get" },
+            { textBefore: "We", textAfter: "any noise.", hint: "(hear)", a: "didn't hear" },
+            { textBefore: "They", textAfter: "their friends.", hint: "(meet)", a: "didn't meet" },
+            { textBefore: "I", textAfter: "much money.", hint: "(spend)", a: "didn't spend" },
+            { textBefore: "You", textAfter: "a good job.", hint: "(do)", a: "didn't do" },
+            { textBefore: "The plane", textAfter: "on time.", hint: "(land)", a: "didn't land" },
+            { textBefore: "The birds", textAfter: ".", hint: "(fly)", a: "didn't fly" },
+            { textBefore: "We", textAfter: "any mistakes.", hint: "(repeat)", a: "didn't repeat" },
+            { textBefore: "They", textAfter: "any questions.", hint: "(ask)", a: "didn't ask" },
+            { textBefore: "I", textAfter: "tired.", hint: "(feel)", a: "didn't feel" }
+        ];
+
+        // Bank 3: 80 Interrogative Past Simple uniche
+        const bankEx3 = [
+            { textBefore: "", textAfter: "hard yesterday?", hint: "(I / work)", a: "did i work" },
+            { textBefore: "", textAfter: "tennis yesterday?", hint: "(you / play)", a: "did you play" },
+            { textBefore: "", textAfter: "a book?", hint: "(he / read)", a: "did he read" },
+            { textBefore: "", textAfter: "dinner?", hint: "(she / cook)", a: "did she cook" },
+            { textBefore: "", textAfter: "yesterday?", hint: "(it / rain)", a: "did it rain" },
+            { textBefore: "", textAfter: "the match?", hint: "(we / win)", a: "did we win" },
+            { textBefore: "", textAfter: "early?", hint: "(they / sleep)", a: "did they sleep" },
+            { textBefore: "", textAfter: "English?", hint: "(Tom / study)", a: "did tom study" },
+            { textBefore: "", textAfter: "music?", hint: "(you / listen)", a: "did you listen" },
+            { textBefore: "", textAfter: "fast?", hint: "(he / run)", a: "did he run" },
+            { textBefore: "", textAfter: "a jacket?", hint: "(she / wear)", a: "did she wear" },
+            { textBefore: "", textAfter: "tv?", hint: "(they / watch)", a: "did they watch" },
+            { textBefore: "", textAfter: "well?", hint: "(I / swim)", a: "did i swim" },
+            { textBefore: "", textAfter: "lunch?", hint: "(we / eat)", a: "did we eat" },
+            { textBefore: "", textAfter: "to me?", hint: "(you / talk)", a: "did you talk" },
+            { textBefore: "", textAfter: "a car?", hint: "(he / drive)", a: "did he drive" },
+            { textBefore: "", textAfter: "a letter?", hint: "(she / write)", a: "did she write" },
+            { textBefore: "", textAfter: "football?", hint: "(they / play)", a: "did they play" },
+            { textBefore: "", textAfter: "well?", hint: "(it / work)", a: "did it work" },
+            { textBefore: "", textAfter: "early?", hint: "(we / leave)", a: "did we leave" },
+            { textBefore: "", textAfter: "coffee?", hint: "(I / drink)", a: "did i drink" },
+            { textBefore: "", textAfter: "good?", hint: "(you / feel)", a: "did you feel" },
+            { textBefore: "", textAfter: "a song?", hint: "(he / sing)", a: "did he sing" },
+            { textBefore: "", textAfter: "her room?", hint: "(she / clean)", a: "did she clean" },
+            { textBefore: "", textAfter: "snow?", hint: "(it / snow)", a: "did it snow" },
+            { textBefore: "", textAfter: "right?", hint: "(we / do)", a: "did we do" },
+            { textBefore: "", textAfter: "late?", hint: "(they / arrive)", a: "did they arrive" },
+            { textBefore: "", textAfter: "a hat?", hint: "(Tom / wear)", a: "did tom wear" },
+            { textBefore: "", textAfter: "to school?", hint: "(you / go)", a: "did you go" },
+            { textBefore: "", textAfter: "breakfast?", hint: "(he / make)", a: "did he make" },
+            { textBefore: "", textAfter: "sad?", hint: "(she / cry)", a: "did she cry" },
+            { textBefore: "", textAfter: "loudly?", hint: "(they / shout)", a: "did they shout" },
+            { textBefore: "", textAfter: "correctly?", hint: "(I / think)", a: "did i think" },
+            { textBefore: "", textAfter: "ready?", hint: "(we / get)", a: "did we get" },
+            { textBefore: "", textAfter: "a bike?", hint: "(you / ride)", a: "did you ride" },
+            { textBefore: "", textAfter: "a tie?", hint: "(he / wear)", a: "did he wear" },
+            { textBefore: "", textAfter: "tea?", hint: "(she / drink)", a: "did she drink" },
+            { textBefore: "", textAfter: "fast?", hint: "(it / move)", a: "did it move" },
+            { textBefore: "", textAfter: "jokes?", hint: "(they / tell)", a: "did they tell" },
+            { textBefore: "", textAfter: "right?", hint: "(I / act)", a: "did i act" },
+            { textBefore: "", textAfter: "yesterday?", hint: "(you / work)", a: "did you work" },
+            { textBefore: "", textAfter: "a game?", hint: "(he / play)", a: "did he play" },
+            { textBefore: "", textAfter: "flowers?", hint: "(she / buy)", a: "did she buy" },
+            { textBefore: "", textAfter: "well?", hint: "(they / sleep)", a: "did they sleep" },
+            { textBefore: "", textAfter: "good?", hint: "(we / look)", a: "did we look" },
+            { textBefore: "", textAfter: "glasses?", hint: "(I / wear)", a: "did i wear" },
+            { textBefore: "", textAfter: "the truth?", hint: "(you / speak)", a: "did you speak" },
+            { textBefore: "", textAfter: "soup?", hint: "(he / eat)", a: "did he eat" },
+            { textBefore: "", textAfter: "music?", hint: "(she / hear)", a: "did she hear" },
+            { textBefore: "", textAfter: "then?", hint: "(it / end)", a: "did it end" },
+            { textBefore: "", textAfter: "hurry?", hint: "(we / hurry)", a: "did we hurry" },
+            { textBefore: "", textAfter: "help?", hint: "(they / need)", a: "did they need" },
+            { textBefore: "", textAfter: "right?", hint: "(I / drive)", a: "did i drive" },
+            { textBefore: "", textAfter: "jokes?", hint: "(you / make)", a: "did you make" },
+            { textBefore: "", textAfter: "his car?", hint: "(he / wash)", a: "did he wash" },
+            { textBefore: "", textAfter: "her hair?", hint: "(she / brush)", a: "did she brush" },
+            { textBefore: "", textAfter: "hard?", hint: "(they / study)", a: "did they study" },
+            { textBefore: "", textAfter: "ready?", hint: "(we / wait)", a: "did we wait" },
+            { textBefore: "", textAfter: "a picture?", hint: "(I / draw)", a: "did i draw" },
+            { textBefore: "", textAfter: "well?", hint: "(you / dance)", a: "did you dance" },
+            { textBefore: "", textAfter: "a computer?", hint: "(he / use)", a: "did he use" },
+            { textBefore: "", textAfter: "a song?", hint: "(she / sing)", a: "did she sing" },
+            { textBefore: "", textAfter: "brightly?", hint: "(it / shine)", a: "did it shine" },
+            { textBefore: "", textAfter: "notes?", hint: "(we / take)", a: "did we take" },
+            { textBefore: "", textAfter: "plans?", hint: "(they / make)", a: "did they make" },
+            { textBefore: "", textAfter: "shoes?", hint: "(I / wear)", a: "did i wear" },
+            { textBefore: "", textAfter: "attention?", hint: "(you / pay)", a: "did you pay" },
+            { textBefore: "", textAfter: "his lunch?", hint: "(he / eat)", a: "did he eat" },
+            { textBefore: "", textAfter: "her coat?", hint: "(she / wear)", a: "did she wear" },
+            { textBefore: "", textAfter: "heavy?", hint: "(it / rain)", a: "did it rain" },
+            { textBefore: "", textAfter: "well?", hint: "(we / cook)", a: "did we cook" },
+            { textBefore: "", textAfter: "friends?", hint: "(they / meet)", a: "did they meet" },
+            { textBefore: "", textAfter: "fast?", hint: "(I / run)", a: "did i run" },
+            { textBefore: "", textAfter: "ok?", hint: "(you / feel)", a: "did you feel" },
+            { textBefore: "", textAfter: "his room?", hint: "(he / clean)", a: "did he clean" },
+            { textBefore: "", textAfter: "a test?", hint: "(she / write)", a: "did she write" },
+            { textBefore: "", textAfter: "windy?", hint: "(it / blow)", a: "did it blow" },
+            { textBefore: "", textAfter: "correct?", hint: "(we / think)", a: "did we think" },
+            { textBefore: "", textAfter: "vacation?", hint: "(they / plan)", a: "did they plan" },
+            { textBefore: "", textAfter: "sure?", hint: "(I / stand)", a: "did i stand" }
+        ];
+
+        // Bank 4: 80 Mix Challenge Past Simple uniche
+        const bankEx4 = [
+            { textBefore: "She", hint: "(She / cook)", a: "cooked", after: "lunch yesterday." },
+            { textBefore: "They", hint: "(They / listen)", a: "didn't listen", after: "to the teacher." },
+            { textBefore: "", hint: "(you / enjoy)", a: "did you enjoy", after: "the party?" },
+            { textBefore: "I", hint: "(I / run)", a: "ran", after: "in the park." },
+            { textBefore: "He", hint: "(He / wear)", a: "didn't wear", after: "a jacket yesterday." },
+            { textBefore: "", hint: "(it / rain)", a: "did it rain", after: "last night?" },
+            { textBefore: "We", hint: "(We / study)", a: "studied", after: "for the exam." },
+            { textBefore: "The dog", hint: "(The dog / sleep)", a: "slept", after: "under the bed." },
+            { textBefore: "You", hint: "(You / read)", a: "read", after: "an interesting book." },
+            { textBefore: "", hint: "(she / work)", a: "did she work", after: "yesterday?" },
+            { textBefore: "My friends", hint: "(My friends / travel)", a: "travelled", after: "to Spain." },
+            { textBefore: "I", hint: "(I / drink)", a: "didn't drink", after: "coffee." },
+            { textBefore: "Tom", hint: "(Tom / play)", a: "played", after: "tennis with Paul." },
+            { textBefore: "", hint: "(they / watch)", a: "did they watch", after: "tv?" },
+            { textBefore: "The sun", hint: "(The sun / shine)", a: "shone", after: "brightly." },
+            { textBefore: "We", hint: "(We / make)", a: "didn't make", after: "any noise." },
+            { textBefore: "Anna", hint: "(Anna / write)", a: "wrote", after: "an email." },
+            { textBefore: "", hint: "(he / swim)", a: "did he swim", after: "in the pool?" },
+            { textBefore: "You", hint: "(You / listen)", a: "didn't listen", after: "to me." },
+            { textBefore: "The baby", hint: "(The baby / cry)", a: "cried", after: "all night." },
+            { textBefore: "I", hint: "(I / wear)", a: "wore", after: "a blue shirt." },
+            { textBefore: "They", hint: "(They / clean)", a: "didn't clean", after: "their house." },
+            { textBefore: "", hint: "(we / win)", a: "did we win", after: "the game?" },
+            { textBefore: "My dad", hint: "(My dad / wash)", a: "washed", after: "his car." },
+            { textBefore: "She", hint: "(She / eat)", a: "didn't eat", after: "her lunch." },
+            { textBefore: "", hint: "(it / snow)", a: "did it snow", after: "last winter?" },
+            { textBefore: "The students", hint: "(The students / write)", a: "wrote", after: "notes." },
+            { textBefore: "I", hint: "(I / work)", a: "worked", after: "hard last week." },
+            { textBefore: "You", hint: "(You / drive)", a: "didn't drive", after: "too fast." },
+            { textBefore: "He", hint: "(He / sing)", a: "sang", after: "a nice song." },
+            { textBefore: "", hint: "(they / come)", a: "did they come", after: "with us?" },
+            { textBefore: "We", hint: "(We / have)", a: "had", after: "a good time." },
+            { textBefore: "The cat", hint: "(The cat / eat)", a: "ate", after: "its food." },
+            { textBefore: "Sara", hint: "(Sara / wear)", a: "wore", after: "a red dress." },
+            { textBefore: "", hint: "(you / speak)", a: "did you speak", after: "English?" },
+            { textBefore: "I", hint: "(I / look)", a: "looked", after: "for my keys." },
+            { textBefore: "They", hint: "(They / play)", a: "didn't play", after: "football." },
+            { textBefore: "He", hint: "(He / do)", a: "did", after: "his homework." },
+            { textBefore: "", hint: "(she / sleep)", a: "did she sleep", after: "well?" },
+            { textBefore: "We", hint: "(We / plan)", a: "planned", after: "a trip." },
+            { textBefore: "The phone", hint: "(The phone / ring)", a: "rang", after: "." },
+            { textBefore: "You", hint: "(You / make)", a: "made", after: "a mistake." },
+            { textBefore: "I", hint: "(I / feel)", a: "didn't feel", after: "well." },
+            { textBefore: "", hint: "(they / wait)", a: "did they wait", after: "for the bus?" },
+            { textBefore: "The children", hint: "(The children / run)", a: "ran", after: "outside." },
+            { textBefore: "Mark", hint: "(Mark / read)", a: "read", after: "a magazine." },
+            { textBefore: "She", hint: "(She / cook)", a: "didn't cook", after: "dinner." },
+            { textBefore: "", hint: "(it / work)", a: "did it work", after: "properly?" },
+            { textBefore: "We", hint: "(We / watch)", a: "watched", after: "a movie." },
+            { textBefore: "They", hint: "(They / buy)", a: "didn't buy", after: "anything." },
+            { textBefore: "I", hint: "(I / study)", a: "studied", after: "French." },
+            { textBefore: "You", hint: "(You / wear)", a: "didn't wear", after: "a coat." },
+            { textBefore: "He", hint: "(He / fix)", a: "fixed", after: "the bike." },
+            { textBefore: "", hint: "(she / wear)", a: "did she wear", after: "a hat?" },
+            { textBefore: "The river", hint: "(The river / flow)", a: "flowed", after: "fast." },
+            { textBefore: "We", hint: "(We / stay)", a: "stayed", after: "at a hotel." },
+            { textBefore: "My mother", hint: "(My mother / bake)", a: "baked", after: "a cake." },
+            { textBefore: "", hint: "(you / do)", a: "did you do", after: "yesterday?" },
+            { textBefore: "I", hint: "(I / listen)", a: "listened", after: "to the radio." },
+            { textBefore: "They", hint: "(They / study)", a: "didn't study", after: "hard." },
+            { textBefore: "He", hint: "(He / take)", a: "took", after: "photos." },
+            { textBefore: "She", hint: "(She / paint)", a: "painted", after: "a picture." },
+            { textBefore: "", hint: "(it / rain)", a: "did it rain", after: "hard?" },
+            { textBefore: "We", hint: "(We / leave)", a: "left", after: "early." },
+            { textBefore: "The dog", hint: "(The dog / bark)", a: "barked", after: "at the cat." },
+            { textBefore: "You", hint: "(You / tell)", a: "didn't tell", after: "the truth." },
+            { textBefore: "I", hint: "(I / write)", a: "wrote", after: "a letter." },
+            { textBefore: "Tom", hint: "(Tom / clean)", a: "cleaned", after: "his room." },
+            { textBefore: "", hint: "(they / play)", a: "did they play", after: "tennis?" },
+            { textBefore: "She", hint: "(She / sing)", a: "didn't sing", after: "yesterday." },
+            { textBefore: "We", hint: "(We / meet)", a: "met", after: "our friends." },
+            { textBefore: "The train", hint: "(The train / arrive)", a: "arrived", after: "late." },
+            { textBefore: "You", hint: "(You / check)", a: "checked", after: "your email." },
+            { textBefore: "I", hint: "(I / spend)", a: "didn't spend", after: "much money." },
+            { textBefore: "", hint: "(he / wear)", a: "did he wear", after: "a suit?" },
+            { textBefore: "They", hint: "(They / travel)", a: "didn't travel", after: "abroad." },
+            { textBefore: "The wind", hint: "(The wind / blow)", a: "blew", after: "strongly." },
+            { textBefore: "We", hint: "(We / try)", a: "tried", after: "our best." },
+            { textBefore: "She", hint: "(She / smile)", a: "smiled", after: "at you." },
+            { textBefore: "", hint: "(you / sleep)", a: "did you sleep", after: "well?" }
+        ];
+
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function loadInlineQuiz(bank, containerId, scoreId, prefix) {
+            const container = document.getElementById(containerId);
+            const scoreDisplay = document.getElementById(scoreId);
+            container.innerHTML = '';
+            scoreDisplay.textContent = 'Punteggio: 0 / 5';
+
+            const shuffled = [...bank].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 5);
+
+            selected.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'question-item';
+                
+                // Per la sezione ex3 (Interrogative), non mettiamo item.textBefore fisso perché l'input parte all'inizio
+                let showSubjectBefore = (prefix === 'ex3') ? false : (item.textBefore !== "");
+
+                itemDiv.innerHTML = `
+                    <div class="sentence-container">
+                        <span>${index + 1}.</span>
+                        ${showSubjectBefore ? `<span>${item.textBefore}</span>` : ''}
+                        <input type="text" class="inline-input" id="${prefix}-ans-${index}" placeholder="${item.hint}">
+                        <span>${item.textAfter || ''}</span>
+                        <button class="btn ${prefix === 'ex4' ? 'btn-mix' : ''}" onclick="checkInlineAnswer('${prefix}', ${index}, '${item.a.replace(/'/g, "\\'")}')">Verifica</button>
+                    </div>
+                    <div class="feedback" id="${prefix}-feedback-${index}"></div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function checkInlineAnswer(prefix, index, correctAnswer) {
+            const input = document.getElementById(`${prefix}-ans-${index}`);
+            const feedback = document.getElementById(`${prefix}-feedback-${index}`);
+            
+            const userVal = input.value.trim().toLowerCase().replace(/\.$/, '');
+            const correctVal = correctAnswer.trim().toLowerCase().replace(/\.$/, '');
+
+            if (userVal === "") {
+                feedback.textContent = "⚠️ Inserisci una risposta!";
+                feedback.className = "feedback incorrect";
+                return;
+            }
+
+            if (userVal === correctVal) {
+                feedback.textContent = "Corretto! 🎉";
+                feedback.className = "feedback correct";
+                input.disabled = true;
+                input.style.borderColor = "var(--success)";
+                updateScore(prefix);
+            } else {
+                feedback.textContent = `❌ Sbagliato. La risposta corretta era: "${correctAnswer}"`;
+                feedback.className = "feedback incorrect";
+                input.style.borderColor = "var(--error)";
+            }
+        }
+
+        function updateScore(prefix) {
+            const scoreId = `score-${prefix}`;
+            const scoreDisplay = document.getElementById(scoreId);
+            let current = parseInt(scoreDisplay.textContent.split('/')[0].replace('Punteggio:', '').trim());
+            current++;
+            scoreDisplay.textContent = `Punteggio: ${current} / 5`;
+        }
+
+        window.onload = function() {
+            loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1');
+            loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2');
+            loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3');
+            loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4');
+        };
+    </script>
+</body>
+</html>
