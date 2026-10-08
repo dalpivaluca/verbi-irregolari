@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Hub - Portale Didattico</title>
+    <title>English Hub - Home</title>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -29,134 +29,103 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            justify-content: center;
+            padding: 20px;
         }
 
-        header {
+        .container {
+            max-width: 650px;
+            width: 100%;
             text-align: center;
-            margin-bottom: 50px;
         }
 
-        header h1 {
+        h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
             color: var(--accent);
         }
 
-        header p {
+        p {
             color: var(--text-muted);
+            margin-bottom: 35px;
             font-size: 1.1rem;
         }
 
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            text-decoration: none;
-            color: inherit;
+        .menu-grid {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            gap: 14px;
         }
 
-        .card.active:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.15);
-        }
-
-        .card.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 12px;
+        .menu-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
             color: var(--text-color);
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .badge {
-            align-self: flex-start;
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 16px 22px;
+            border-radius: 12px;
+            font-size: 1.15rem;
             font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s ease;
         }
 
-        .badge.coming {
-            background-color: rgba(148, 163, 184, 0.1);
-            color: var(--text-muted);
+        .menu-btn:hover {
+            border-color: var(--accent);
+            background-color: rgba(56, 189, 248, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .menu-btn span.icon {
+            font-size: 1.3rem;
         }
 
         footer {
-            margin-top: auto;
-            padding-top: 40px;
+            margin-top: 40px;
             color: var(--text-muted);
             font-size: 0.9rem;
-            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>English Hub</h1>
-        <p>Scegli l'argomento e mettiti alla prova con gli esercizi interattivi</p>
-    </header>
-
     <div class="container">
-        <!-- Scheda Verbi Irregolari -->
-        <a href="verbi.html" class="card active">
-            <div>
-                <h3>Verbi Irregolari</h3>
-                <p>Ripassa i verbi irregolari fondamentali e testa la tua preparazione con quiz casuali mirati.</p>
-            </div>
-            <span class="badge">Disponibile ora ✨</span>
-        </a>
+        <h1>English Hub</h1>
+        <p>Scegli l'argomento che vuoi allenare:</p>
 
-        <!-- Scheda Future with Will -->
-        <a href="will.html" class="card active">
-            <div>
-                <h3>Future with Will</h3>
-                <p>Regole ed esercizi interattivi sul futuro con will, won't e confronti in blocchi da 5 frasi.</p>
-            </div>
-            <span class="badge">Disponibile ora ✨</span>
-        </a>
+        <div class="menu-grid">
+            <!-- 1. Livello Base: Present Simple & Present Continuous -->
+            <a href="present_simple.html" class="menu-btn">
+                <span class="icon">🟢</span> Present Simple
+            </a>
+            <a href="Present_Countinuous.html" class="menu-btn">
+                <span class="icon">🔵</span> Present Continuous
+            </a>
 
-        <!-- Scheda Futura (Coming Soon) -->
-        <div class="card disabled">
-            <div>
-                <h3>Prossimo Argomento</h3>
-                <p>Nuovi argomenti di grammatiche e test interattivi in arrivo nelle prossime settimane.</p>
-            </div>
-            <span class="badge coming">COMING SOON ⏳</span>
+            <!-- 2. Livello Intermedio: Past Simple & Past Continuous -->
+            <a href="Past_Simple.html" class="menu-btn">
+                <span class="icon">🟡</span> Past Simple
+            </a>
+            <a href="Past_Continuous.html" class="menu-btn">
+                <span class="icon">⏳</span> Past Continuous
+            </a>
+
+            <!-- 3. Futuro -->
+            <a href="will.html" class="menu-btn">
+                <span class="icon">🚀</span> Future with Will
+            </a>
+
+            <!-- 4. Grammatica e Strumenti -->
+            <a href="verbi_irregolari.html" class="menu-btn">
+                <span class="icon">📖</span> Verbi Irregolari
+            </a>
         </div>
     </div>
 
     <footer>
-        <p>&copy; 2026 English Hub • Creato per lo studio e la pratica</p>
+        <p>&copy; 2026 English Hub</p>
     </footer>
 
 </body>
