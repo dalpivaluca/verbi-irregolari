@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Present Simple Hub - English Hub</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border: #334155;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border-color: var(--accent);
+        }
+
+        .tab-btn.mix-tab {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .tab-btn.mix-tab.active {
+            background-color: #f59e0b;
+            color: var(--bg-color);
+            border-color: #f59e0b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .instructions {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .question-item {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .sentence-container {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inline-input {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--accent);
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 6px 12px;
+            font-size: 1.05rem;
+            outline: none;
+            width: 170px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .inline-input::placeholder {
+            color: rgba(148, 163, 184, 0.45);
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        .inline-input:focus {
+            border-color: var(--accent-hover);
+            background-color: rgba(56, 189, 248, 0.05);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-mix {
+            background-color: #f59e0b;
+        }
+        .btn-mix:hover {
+            background-color: #d97706;
+        }
+
+        .feedback {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-display {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Present Simple Hub</h1>
+        <p>Completa le frasi coniugando il verbo suggerito in sottoimpressione dentro la casella.</p>
+    </header>
+
+    <div class="container">
+        <!-- Tabs Navigazione -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('ex1', event)">1. Affermative</button>
+            <button class="tab-btn" onclick="switchTab('ex2', event)">2. Terza Persona</button>
+            <button class="tab-btn" onclick="switchTab('ex3', event)">3. Negative</button>
+            <button class="tab-btn" onclick="switchTab('ex4', event)">4. Interrogative</button>
+            <button class="tab-btn mix-tab" onclick="switchTab('ex5', event)">🔥 5. Mix Challenge</button>
+        </div>
+
+        <!-- Sezione 1: Affermative -->
+        <div id="ex1" class="tab-content active">
+            <div class="exercise-card">
+                <h2>Forma Affermativa</h2>
+                <p class="instructions">Digita il verbo corretto al Present Simple nello spazio vuoto.</p>
+                <div id="container-ex1"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex1">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 2: Terza Persona -->
+        <div id="ex2" class="tab-content">
+            <div class="exercise-card">
+                <h2>Terza Persona Singolare (-s / -es)</h2>
+                <p class="instructions">Coniuga il verbo alla terza persona nello spazio vuoto (es. works, studies).</p>
+                <div id="container-ex2"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex2">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 3: Negative -->
+        <div id="ex3" class="tab-content">
+            <div class="exercise-card">
+                <h2>Forma Negativa (Don't / Doesn't)</h2>
+                <p class="instructions">Inserisci la forma negativa usando il verbo suggerito.</p>
+                <div id="container-ex3"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex3">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 4: Interrogative -->
+        <div id="ex4" class="tab-content">
+            <div class="exercise-card">
+                <h2>Forma Interrogativa (Do / Does)</h2>
+                <p class="instructions">Inserisci la struttura di domanda corretta usando gli elementi indicati.</p>
+                <div id="container-ex4"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex4">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 5: Mix Challenge -->
+        <div id="ex5" class="tab-content">
+            <div class="exercise-card">
+                <h2>🔥 Mix Challenge (Tutte le forme)</h2>
+                <p class="instructions">Frasi miste. Maiuscole e spazi superflui non influiscono sul risultato!</p>
+                <div id="container-ex5"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex5" style="color: #f59e0b;">Punteggio: 0 / 5</span>
+                    <button class="btn btn-mix" onclick="loadInlineQuiz(bankEx5, 'container-ex5', 'score-ex5', 'ex5')">🔄 Altre 5 frasi miste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 English Hub • Present Simple Practice</p>
+    </footer>
+
+    <script>
+        const bankEx1 = [
+            { textBefore: "I", textAfter: "in an office in London.", hint: "work", a: "work" },
+            { textBefore: "You", textAfter: "very good English.", hint: "speak", a: "speak" },
+            { textBefore: "We", textAfter: "in a big apartment near the center.", hint: "live", a: "live" },
+            { textBefore: "They", textAfter: "tennis every weekend.", hint: "play", a: "play" },
+            { textBefore: "I", textAfter: "reading books in the evening.", hint: "like", a: "like" },
+            { textBefore: "You", textAfter: "work at 9:00 AM every day.", hint: "start", a: "start" },
+            { textBefore: "We", textAfter: "pizza on Friday nights.", hint: "eat", a: "eat" },
+            { textBefore: "They", textAfter: "films at the cinema.", hint: "watch", a: "watch" },
+            { textBefore: "I", textAfter: "this grammar rule.", hint: "understand", a: "understand" },
+            { textBefore: "You", textAfter: "a lot for your job.", hint: "travel", a: "travel" },
+            { textBefore: "We", textAfter: "fresh bread every morning.", hint: "buy", a: "buy" },
+            { textBefore: "They", textAfter: "to pop music on the radio.", hint: "listen", a: "listen" },
+            { textBefore: "I", textAfter: "some help with this exercise.", hint: "need", a: "need" },
+            { textBefore: "You", textAfter: "a cup of coffee?", hint: "want", a: "want" },
+            { textBefore: "We", textAfter: "school at 2:00 PM.", hint: "finish", a: "finish" },
+            { textBefore: "I", textAfter: "up early during the week.", hint: "get", a: "get" },
+            { textBefore: "You", textAfter: "a nice car.", hint: "have", a: "have" },
+            { textBefore: "We", textAfter: "our grandparents on Sundays.", hint: "visit", a: "visit" },
+            { textBefore: "They", textAfter: "football in the park.", hint: "play", a: "play" },
+            { textBefore: "I", textAfter: "to music when I study.", hint: "listen", a: "listen" },
+            { textBefore: "You", textAfter: "so fast!", hint: "walk", a: "walk" },
+            { textBefore: "We", textAfter: "our homework after dinner.", hint: "do", a: "do" },
+            { textBefore: "They", textAfter: "to the beach in summer.", hint: "go", a: "go" },
+            { textBefore: "I", textAfter: "milk for breakfast.", hint: "drink", a: "drink" },
+            { textBefore: "You", textAfter: "interesting books.", hint: "read", a: "read" },
+            { textBefore: "We", textAfter: "our friends on Saturday.", hint: "meet", a: "meet" },
+            { textBefore: "They", textAfter: "near the train station.", hint: "live", a: "live" },
+            { textBefore: "I", textAfter: "new clothes every month.", hint: "buy", a: "buy" },
+            { textBefore: "You", textAfter: "questions in class.", hint: "ask", a: "ask" },
+            { textBefore: "We", textAfter: "English grammar.", hint: "study", a: "study" },
+            { textBefore: "They", textAfter: "late on Sundays.", hint: "sleep", a: "sleep" },
+            { textBefore: "I", textAfter: "animals very much.", hint: "love", a: "love" },
+            { textBefore: "You", textAfter: "the piano.", hint: "play", a: "play" },
+            { textBefore: "We", textAfter: "lunch at school.", hint: "have", a: "have" },
+            { textBefore: "They", textAfter: "hard every day.", hint: "work", a: "work" },
+            { textBefore: "I", textAfter: "happy today.", hint: "feel", a: "feel" },
+            { textBefore: "You", textAfter: "me a lot.", hint: "help", a: "help" },
+            { textBefore: "We", textAfter: "in the swimming pool.", hint: "swim", a: "swim" },
+            { textBefore: "They", textAfter: "cold water.", hint: "drink", a: "drink" },
+            { textBefore: "I", textAfter: "my teeth twice a day.", hint: "brush", a: "brush" },
+            { textBefore: "You", textAfter: "the door, please.", hint: "open", a: "open" },
+            { textBefore: "We", textAfter: "the window for fresh air.", hint: "close", a: "close" },
+            { textBefore: "They", textAfter: "pictures in art class.", hint: "draw", a: "draw" },
+            { textBefore: "I", textAfter: "songs in the shower.", hint: "sing", a: "sing" },
+            { textBefore: "You", textAfter: "very well.", hint: "dance", a: "dance" },
+            { textBefore: "We", textAfter: "soccer matches on TV.", hint: "watch", a: "watch" },
+            { textBefore: "They", textAfter: "their rooms on Saturday.", hint: "clean", a: "clean" },
+            { textBefore: "I", textAfter: "letters to my penpal.", hint: "write", a: "write" },
+            { textBefore: "You", textAfter: "funny jokes.", hint: "tell", a: "tell" },
+            { textBefore: "We", textAfter: "new words in class.", hint: "learn", a: "learn" },
+            { textBefore: "They", textAfter: "questions to the teacher.", hint: "bring", a: "bring" },
+            { textBefore: "I", textAfter: "my keys every morning.", hint: "find", a: "find" },
+            { textBefore: "You", textAfter: "smart clothes.", hint: "wear", a: "wear" },
+            { textBefore: "We", textAfter: "dinner at 8 PM.", hint: "eat", a: "eat" },
+            { textBefore: "They", textAfter: "early on weekdays.", hint: "arrive", a: "arrive" },
+            { textBefore: "I", textAfter: "the bus to school.", hint: "catch", a: "catch" },
+            { textBefore: "You", textAfter: "by train.", hint: "travel", a: "travel" },
+            { textBefore: "We", textAfter: "our bags packed.", hint: "keep", a: "keep" },
+            { textBefore: "They", textAfter: "money for a trip.", hint: "save", a: "save" },
+            { textBefore: "I", textAfter: "the right answer.", hint: "know", a: "know" },
+            { textBefore: "You", textAfter: "a brilliant idea.", hint: "have", a: "have" },
+            { textBefore: "We", textAfter: "our goals clearly.", hint: "see", a: "see" },
+            { textBefore: "They", textAfter: "calm during exams.", hint: "stay", a: "stay" },
+            { textBefore: "I", textAfter: "my phone on the desk.", hint: "put", a: "put" },
+            { textBefore: "You", textAfter: "the table for dinner.", hint: "set", a: "set" },
+            { textBefore: "We", textAfter: "plants in our garden.", hint: "grow", a: "grow" },
+            { textBefore: "They", textAfter: "flowers in spring.", hint: "pick", a: "pick" },
+            { textBefore: "I", textAfter: "fruit every afternoon.", hint: "eat", a: "eat" },
+            { textBefore: "You", textAfter: "vegetables for health.", hint: "cook", a: "cook" },
+            { textBefore: "We", textAfter: "soup when it is cold.", hint: "prefer", a: "prefer" },
+            { textBefore: "They", textAfter: "tea in the afternoon.", hint: "drink", a: "drink" },
+            { textBefore: "I", textAfter: "my bicycle to the park.", hint: "ride", a: "ride" },
+            { textBefore: "You", textAfter: "skateboards very well.", hint: "ride", a: "ride" },
+            { textBefore: "We", textAfter: "mountain trails.", hint: "climb", a: "climb" },
+            { textBefore: "They", textAfter: "tent camps in summer.", hint: "build", a: "build" },
+            { textBefore: "I", textAfter: "stars through a telescope.", hint: "watch", a: "watch" },
+            { textBefore: "You", textAfter: "photos of nature.", hint: "take", a: "take" },
+            { textBefore: "We", textAfter: "memories together.", hint: "make", a: "make" },
+            { textBefore: "They", textAfter: "jokes with friends.", hint: "share", a: "share" },
+            { textBefore: "I", textAfter: "peace and quiet.", hint: "enjoy", a: "enjoy" }
+        ];
+
+        const bankEx2 = [
+            { textBefore: "He", textAfter: "in a bank downtown.", hint: "work", a: "works" },
+            { textBefore: "She", textAfter: "biology at college.", hint: "study", a: "studies" },
+            { textBefore: "It", textAfter: "a lot in autumn here.", hint: "rain", a: "rains" },
+            { textBefore: "My brother", textAfter: "football very well.", hint: "play", a: "plays" },
+            { textBefore: "Maria", textAfter: "eating ice cream.", hint: "like", a: "likes" },
+            { textBefore: "John", textAfter: "to the gym on Mondays.", hint: "go", a: "goes" },
+            { textBefore: "The train", textAfter: "at 7:45 AM.", hint: "leave", a: "leaves" },
+            { textBefore: "She", textAfter: "television after dinner.", hint: "watch", a: "watches" },
+            { textBefore: "He", textAfter: "computers in his free time.", hint: "fix", a: "fixes" },
+            { textBefore: "The dog", textAfter: "under the table.", hint: "sleep", a: "sleeps" },
+            { textBefore: "My sister", textAfter: "a book every week.", hint: "read", a: "reads" },
+            { textBefore: "He", textAfter: "breakfast at 7 o'clock.", hint: "have", a: "has" },
+            { textBefore: "She", textAfter: "her homework in her room.", hint: "do", a: "does" },
+            { textBefore: "Tom", textAfter: "to New York twice a year.", hint: "fly", a: "flies" },
+            { textBefore: "The sun", textAfter: "in the east.", hint: "rise", a: "rises" },
+            { textBefore: "He", textAfter: "up early every morning.", hint: "get", a: "gets" },
+            { textBefore: "She", textAfter: "fluent Spanish.", hint: "speak", a: "speaks" },
+            { textBefore: "It", textAfter: "cold in winter.", hint: "get", a: "gets" },
+            { textBefore: "My father", textAfter: "the newspaper daily.", hint: "read", a: "reads" },
+            { textBefore: "Anna", textAfter: "delicious cakes.", hint: "bake", a: "bakes" },
+            { textBefore: "The cat", textAfter: "on the sofa.", hint: "sit", a: "sits" },
+            { textBefore: "He", textAfter: "to music all day.", hint: "listen", a: "listens" },
+            { textBefore: "She", textAfter: "her bedroom neat.", hint: "keep", a: "keeps" },
+            { textBefore: "The baby", textAfter: "when he is hungry.", hint: "cry", a: "cries" },
+            { textBefore: "My teacher", textAfter: "grammar clearly.", hint: "explain", a: "explains" },
+            { textBefore: "Peter", textAfter: "his bike to school.", hint: "ride", a: "rides" },
+            { textBefore: "She", textAfter: "tea instead of coffee.", hint: "drink", a: "drinks" },
+            { textBefore: "He", textAfter: "his teeth after meals.", hint: "brush", a: "brushes" },
+            { textBefore: "The shop", textAfter: "at 9 PM.", hint: "close", a: "closes" },
+            { textBefore: "Mom", textAfter: "dinner for the family.", hint: "prepare", a: "prepares" },
+            { textBefore: "He", textAfter: "a blue jacket.", hint: "wear", a: "wears" },
+            { textBefore: "She", textAfter: "pictures of animals.", hint: "draw", a: "draws" },
+            { textBefore: "The plane", textAfter: "at midnight.", hint: "arrive", a: "arrives" },
+            { textBefore: "My uncle", textAfter: "in Madrid.", hint: "live", a: "lives" },
+            { textBefore: "He", textAfter: "fast cars.", hint: "drive", a: "drives" },
+            { textBefore: "She", textAfter: "pop songs nicely.", hint: "sing", a: "sings" },
+            { textBefore: "The river", textAfter: "through the valley.", hint: "flow", a: "flows" },
+            { textBefore: "He", textAfter: "maths problems easily.", hint: "solve", a: "solves" },
+            { textBefore: "She", textAfter: "her keys often.", hint: "lose", a: "loses" },
+            { textBefore: "The wind", textAfter: "strongly tonight.", hint: "blow", a: "blows" },
+            { textBefore: "He", textAfter: "basketball on TV.", hint: "watch", a: "watches" },
+            { textBefore: "She", textAfter: "her hair every day.", hint: "wash", a: "washes" },
+            { textBefore: "The phone", textAfter: "too loudly.", hint: "ring", a: "rings" },
+            { textBefore: "He", textAfter: "his car on Sundays.", hint: "wash", a: "washes" },
+            { textBefore: "She", textAfter: "a shower in the morning.", hint: "take", a: "takes" },
+            { textBefore: "The postman", textAfter: "letters at noon.", hint: "deliver", a: "delivers" },
+            { textBefore: "He", textAfter: "history at university.", hint: "teach", a: "teaches" },
+            { textBefore: "She", textAfter: "her lunch box.", hint: "pack", a: "packs" },
+            { textBefore: "The clock", textAfter: "the correct time.", hint: "show", a: "shows" },
+            { textBefore: "He", textAfter: "his hand to answer.", hint: "raise", a: "raises" },
+            { textBefore: "She", textAfter: "sweet perfumes.", hint: "like", a: "likes" },
+            { textBefore: "The bird", textAfter: "high in the sky.", hint: "fly", a: "flies" },
+            { textBefore: "He", textAfter: "good advice.", hint: "give", a: "gives" },
+            { textBefore: "She", textAfter: "helpful answers.", hint: "provide", a: "provides" },
+            { textBefore: "The snow", textAfter: "the ground white.", hint: "turn", a: "turns" },
+            { textBefore: "He", textAfter: "his room every week.", hint: "tidy", a: "tidies" },
+            { textBefore: "She", textAfter: "her goals clearly.", hint: "pursue", a: "pursues" },
+            { textBefore: "The light", textAfter: "very brightly.", hint: "shine", a: "shines" },
+            { textBefore: "He", textAfter: "new vocabulary fast.", hint: "learn", a: "learns" },
+            { textBefore: "She", textAfter: "her dog for a walk.", hint: "take", a: "takes" },
+            { textBefore: "The chef", textAfter: "great meals.", hint: "cook", a: "cooks" },
+            { textBefore: "He", textAfter: "his old friends.", hint: "miss", a: "misses" },
+            { textBefore: "She", textAfter: "her bag on the chair.", hint: "place", a: "places" },
+            { textBefore: "The star", textAfter: "in the dark.", hint: "glitter", a: "glitters" },
+            { textBefore: "He", textAfter: "his lunch at noon.", hint: "eat", a: "eats" },
+            { textBefore: "She", textAfter: "her coffee black.", hint: "take", a: "takes" },
+            { textBefore: "The cow", textAfter: "fresh grass.", hint: "eat", a: "eats" },
+            { textBefore: "He", textAfter: "his shoes off inside.", hint: "take", a: "takes" },
+            { textBefore: "She", textAfter: "her boots in mud.", hint: "step", a: "steps" },
+            { textBefore: "The fire", textAfter: "lots of heat.", hint: "produce", a: "produces" },
+            { textBefore: "He", textAfter: "his suitcase now.", hint: "pack", a: "packs" },
+            { textBefore: "She", textAfter: "her coat on a hook.", hint: "hang", a: "hangs" },
+            { textBefore: "The moon", textAfter: "at night.", hint: "appear", a: "appears" },
+            { textBefore: "He", textAfter: "his job very much.", hint: "enjoy", a: "enjoys" },
+            { textBefore: "She", textAfter: "her tests easily.", hint: "pass", a: "passes" },
+            { textBefore: "The actor", textAfter: "his lines well.", hint: "memorize", a: "memorizes" },
+            { textBefore: "He", textAfter: "his name on paper.", hint: "sign", a: "signs" },
+            { textBefore: "She", textAfter: "her ticket ready.", hint: "hold", a: "holds" },
+            { textBefore: "The machine", textAfter: "constant noise.", hint: "make", a: "makes" },
+            { textBefore: "He", textAfter: "his duties seriously.", hint: "treat", a: "treats" }
+        ];
+
+        const bankEx3 = [
+            { textBefore: "I", textAfter: "getting up early.", hint: "not / like", a: "don't like" },
+            { textBefore: "You", textAfter: "French.", hint: "not / speak", a: "don't speak" },
+            { textBefore: "He", textAfter: "on Sundays.", hint: "not / work", a: "doesn't work" },
+            { textBefore: "She", textAfter: "meat because she is vegetarian.", hint: "not / eat", a: "doesn't eat" },
+            { textBefore: "It", textAfter: "very much in summer.", hint: "not / rain", a: "doesn't rain" },
+            { textBefore: "We", textAfter: "in a big city.", hint: "not / live", a: "don't live" },
+            { textBefore: "They", textAfter: "video games all day.", hint: "not / play", a: "don't play" },
+            { textBefore: "My father", textAfter: "coffee in the evening.", hint: "not / drink", a: "doesn't drink" },
+            { textBefore: "Anna", textAfter: "horror movies.", hint: "not / like", a: "doesn't like" },
+            { textBefore: "You", textAfter: "the problem.", hint: "not / understand", a: "don't understand" },
+            { textBefore: "I", textAfter: "his phone number.", hint: "not / know", a: "don't know" },
+            { textBefore: "He", textAfter: "the guitar.", hint: "not / play", a: "doesn't play" },
+            { textBefore: "We", textAfter: "TV during dinner.", hint: "not / watch", a: "don't watch" },
+            { textBefore: "They", textAfter: "German.", hint: "not / speak", a: "don't speak" },
+            { textBefore: "She", textAfter: "on Saturdays.", hint: "not / work", a: "doesn't work" },
+            { textBefore: "I", textAfter: "cold weather.", hint: "not / like", a: "don't like" },
+            { textBefore: "You", textAfter: "much attention.", hint: "not / pay", a: "don't pay" },
+            { textBefore: "He", textAfter: "fast.", hint: "not / drive", a: "doesn't drive" },
+            { textBefore: "She", textAfter: "late at night.", hint: "not / stay", a: "doesn't stay" },
+            { textBefore: "It", textAfter: "matter.", hint: "not / matter", a: "doesn't matter" },
+            { textBefore: "We", textAfter: "any pets.", hint: "not / have", a: "don't have" },
+            { textBefore: "They", textAfter: "to music loudly.", hint: "not / listen", a: "don't listen" },
+            { textBefore: "I", textAfter: "fish.", hint: "not / eat", a: "don't eat" },
+            { textBefore: "You", textAfter: "the answer.", hint: "not / know", a: "don't know" },
+            { textBefore: "He", textAfter: "his room often.", hint: "not / clean", a: "doesn't clean" },
+            { textBefore: "She", textAfter: "to bed early.", hint: "not / go", a: "doesn't go" },
+            { textBefore: "We", textAfter: "football.", hint: "not / play", a: "don't play" },
+            { textBefore: "They", textAfter: "expensive cars.", hint: "not / drive", a: "don't drive" },
+            { textBefore: "I", textAfter: "sugar in tea.", hint: "not / use", a: "don't use" },
+            { textBefore: "You", textAfter: "me instructions.", hint: "not / give", a: "don't give" },
+            { textBefore: "He", textAfter: "sports.", hint: "not / like", a: "doesn't like" },
+            { textBefore: "She", textAfter: "letters anymore.", hint: "not / write", a: "doesn't write" },
+            { textBefore: "It", textAfter: "snow here.", hint: "not / snow", a: "doesn't snow" },
+            { textBefore: "We", textAfter: "tea.", hint: "not / drink", a: "don't drink" },
+            { textBefore: "They", textAfter: "shopping on Mondays.", hint: "not / go", a: "don't go" },
+            { textBefore: "I", textAfter: "hungry.", hint: "not / feel", a: "don't feel" },
+            { textBefore: "You", textAfter: "ready yet.", hint: "not / look", a: "don't look" },
+            { textBefore: "He", textAfter: "his shoes.", hint: "not / wear", a: "doesn't wear" },
+            { textBefore: "She", textAfter: "hats.", hint: "not / wear", a: "doesn't wear" },
+            { textBefore: "We", textAfter: "mistakes on purpose.", hint: "not / make", a: "don't make" },
+            { textBefore: "They", textAfter: "any doubts.", hint: "not / have", a: "don't have" },
+            { textBefore: "I", textAfter: "that actor.", hint: "not / trust", a: "don't trust" },
+            { textBefore: "You", textAfter: "me serious.", hint: "not / take", a: "don't take" },
+            { textBefore: "He", textAfter: "rules.", hint: "not / follow", a: "doesn't follow" },
+            { textBefore: "She", textAfter: "secrets.", hint: "not / keep", a: "doesn't keep" },
+            { textBefore: "It", textAfter: "sound right.", hint: "not / sound", a: "doesn't sound" },
+            { textBefore: "We", textAfter: "waste water.", hint: "not / waste", a: "don't waste" },
+            { textBefore: "They", textAfter: "any complaints.", hint: "not / have", a: "don't have" },
+            { textBefore: "I", textAfter: "any free time.", hint: "not / have", a: "don't have" },
+            { textBefore: "You", textAfter: "any interest.", hint: "not / show", a: "don't show" },
+            { textBefore: "He", textAfter: "much patience.", hint: "not / have", a: "doesn't have" },
+            { textBefore: "She", textAfter: "any luggage.", hint: "not / bring", a: "doesn't bring" },
+            { textBefore: "We", textAfter: "any problems.", hint: "not / expect", a: "don't expect" },
+            { textBefore: "They", textAfter: "any clues.", hint: "not / offer", a: "don't offer" },
+            { textBefore: "I", textAfter: "such books.", hint: "not / read", a: "don't read" },
+            { textBefore: "You", textAfter: "such clothes.", hint: "not / buy", a: "don't buy" },
+            { textBefore: "He", textAfter: "such words.", hint: "not / use", a: "doesn't use" },
+            { textBefore: "She", textAfter: "such things.", hint: "not / say", a: "doesn't say" },
+            { textBefore: "We", textAfter: "such risks.", hint: "not / take", a: "don't take" },
+            { textBefore: "They", textAfter: "such games.", hint: "not / play", a: "don't play" },
+            { textBefore: "I", textAfter: "that loud music.", hint: "not / mind", a: "don't mind" },
+            { textBefore: "You", textAfter: "my opinion.", hint: "not / share", a: "don't share" },
+            { textBefore: "He", textAfter: "my advice.", hint: "not / accept", a: "doesn't accept" },
+            { textBefore: "She", textAfter: "my calls.", hint: "not / answer", a: "doesn't answer" },
+            { textBefore: "We", textAfter: "their offer.", hint: "not / need", a: "don't need" },
+            { textBefore: "They", textAfter: "our help.", hint: "not / want", a: "don't want" },
+            { textBefore: "I", textAfter: "him well.", hint: "not / know", a: "don't know" },
+            { textBefore: "You", textAfter: "her secrets.", hint: "not / tell", a: "don't tell" },
+            { textBefore: "He", textAfter: "us stories.", hint: "not / tell", a: "doesn't tell" },
+            { textBefore: "She", textAfter: "them gifts.", hint: "not / send", a: "doesn't send" },
+            { textBefore: "We", textAfter: "letters.", hint: "not / send", a: "don't send" },
+            { textBefore: "They", textAfter: "messages.", hint: "not / write", a: "don't write" },
+            { textBefore: "I", textAfter: "cash.", hint: "not / carry", a: "don't carry" },
+            { textBefore: "You", textAfter: "credit cards.", hint: "not / use", a: "don't use" },
+            { textBefore: "He", textAfter: "checks.", hint: "not / sign", a: "doesn't sign" },
+            { textBefore: "She", textAfter: "bills.", hint: "not / pay", a: "doesn't pay" },
+            { textBefore: "We", textAfter: "taxes late.", hint: "not / pay", a: "don't pay" },
+            { textBefore: "They", textAfter: "debts.", hint: "not / keep", a: "don't keep" },
+            { textBefore: "I", textAfter: "worries.", hint: "not / have", a: "don't have" },
+            { textBefore: "You", textAfter: "doubts.", hint: "not / harbor", a: "don't harbor" }
+        ];
+
+        const bankEx4 = [
+            { textBefore: "", textAfter: "pop music?", hint: "You / like", a: "Do you like" },
+            { textBefore: "", textAfter: "in an office?", hint: "He / work", a: "Does he work" },
+            { textBefore: "", textAfter: "English fluently?", hint: "She / speak", a: "Does she speak" },
+            { textBefore: "", textAfter: "near here?", hint: "They / live", a: "Do they live" },
+            { textBefore: "", textAfter: "a lot in your city?", hint: "It / rain", a: "Does it rain" },
+            { textBefore: "", textAfter: "more milk?", hint: "We / need", a: "Do we need" },
+            { textBefore: "", textAfter: "any instruments?", hint: "You / play", a: "Do you play" },
+            { textBefore: "", textAfter: "sports?", hint: "John / like", a: "Does John like" },
+            { textBefore: "", textAfter: "often?", hint: "Your parents / travel", a: "Do your parents travel" },
+            { textBefore: "", textAfter: "TV in the evening?", hint: "She / watch", a: "Does she watch" },
+            { textBefore: "", textAfter: "early?", hint: "You / get up", a: "Do you get up" },
+            { textBefore: "", textAfter: "coffee?", hint: "He / drink", a: "Does he drink" },
+            { textBefore: "", textAfter: "pizza?", hint: "They / eat", a: "Do they eat" },
+            { textBefore: "", textAfter: "books?", hint: "She / read", a: "Does she read" },
+            { textBefore: "", textAfter: "cars?", hint: "Tom / drive", a: "Does Tom drive" },
+            { textBefore: "", textAfter: "dogs?", hint: "You / like", a: "Do you like" },
+            { textBefore: "", textAfter: "maths?", hint: "He / study", a: "Does he study" },
+            { textBefore: "", textAfter: "tennis?", hint: "We / play", a: "Do we play" },
+            { textBefore: "", textAfter: "music?", hint: "They / listen", a: "Do they listen" },
+            { textBefore: "", textAfter: "French?", hint: "She / speak", a: "Does she speak" },
+            { textBefore: "", textAfter: "here?", hint: "You / live", a: "Do you live" },
+            { textBefore: "", textAfter: "fast?", hint: "He / run", a: "Does he run" },
+            { textBefore: "", textAfter: "well?", hint: "She / sing", a: "Does she sing" },
+            { textBefore: "", textAfter: "lunch?", hint: "They / eat", a: "Do they eat" },
+            { textBefore: "", textAfter: "dinner?", hint: "We / cook", a: "Do we cook" },
+            { textBefore: "", textAfter: "shoes?", hint: "You / wear", a: "Do you wear" },
+            { textBefore: "", textAfter: "coats?", hint: "He / wear", a: "Does he wear" },
+            { textBefore: "", textAfter: "glasses?", hint: "She / wear", a: "Does she wear" },
+            { textBefore: "", textAfter: "hats?", hint: "They / wear", a: "Do they wear" },
+            { textBefore: "", textAfter: "money?", hint: "You / save", a: "Do you save" },
+            { textBefore: "", textAfter: "time?", hint: "It / take", a: "Does it take" },
+            { textBefore: "", textAfter: "help?", hint: "We / need", a: "Do we need" },
+            { textBefore: "", textAfter: "guidance?", hint: "They / want", a: "Do they want" },
+            { textBefore: "", textAfter: "advice?", hint: "You / seek", a: "Do you seek" },
+            { textBefore: "", textAfter: "answers?", hint: "He / find", a: "Does he find" },
+            { textBefore: "", textAfter: "questions?", hint: "She / ask", a: "Does she ask" },
+            { textBefore: "", textAfter: "tests?", hint: "They / pass", a: "Do they pass" },
+            { textBefore: "", textAfter: "exams?", hint: "We / take", a: "Do we take" },
+            { textBefore: "", textAfter: "classes?", hint: "You / attend", a: "Do you attend" },
+            { textBefore: "", textAfter: "school?", hint: "He / finish", a: "Does he finish" },
+            { textBefore: "", textAfter: "work?", hint: "She / start", a: "Does she start" },
+            { textBefore: "", textAfter: "holidays?", hint: "They / enjoy", a: "Do they enjoy" },
+            { textBefore: "", textAfter: "weekends?", hint: "You / like", a: "Do you like" },
+            { textBefore: "", textAfter: "parties?", hint: "He / attend", a: "Does he attend" },
+            { textBefore: "", textAfter: "dancing?", hint: "She / like", a: "Does she like" },
+            { textBefore: "", textAfter: "swimming?", hint: "They / enjoy", a: "Do they enjoy" },
+            { textBefore: "", textAfter: "traveling?", hint: "We / like", a: "Do we like" },
+            { textBefore: "", textAfter: "flying?", hint: "You / fear", a: "Do you fear" },
+            { textBefore: "", textAfter: "driving?", hint: "He / like", a: "Does he like" },
+            { textBefore: "", textAfter: "riding?", hint: "She / practice", a: "Does she practice" },
+            { textBefore: "", textAfter: "running?", hint: "They / love", a: "Do they love" },
+            { textBefore: "", textAfter: "walking?", hint: "We / prefer", a: "Do we prefer" },
+            { textBefore: "", textAfter: "camping?", hint: "You / enjoy", a: "Do you enjoy" },
+            { textBefore: "", textAfter: "fishing?", hint: "He / like", a: "Does he like" },
+            { textBefore: "", textAfter: "hunting?", hint: "They / practice", a: "Do they practice" },
+            { textBefore: "", textAfter: "gardening?", hint: "She / love", a: "Does she love" },
+            { textBefore: "", textAfter: "cooking?", hint: "We / enjoy", a: "Do we enjoy" },
+            { textBefore: "", textAfter: "baking?", hint: "You / like", a: "Do you like" },
+            { textBefore: "", textAfter: "painting?", hint: "He / enjoy", a: "Does he enjoy" },
+            { textBefore: "", textAfter: "drawing?", hint: "She / like", a: "Does she like" },
+            { textBefore: "", textAfter: "acting?", hint: "They / practice", a: "Do they practice" },
+            { textBefore: "", textAfter: "singing?", hint: "We / love", a: "Do we love" },
+            { textBefore: "", textAfter: "playing?", hint: "You / enjoy", a: "Do you enjoy" },
+            { textBefore: "", textAfter: "gaming?", hint: "He / like", a: "Does he like" },
+            { textBefore: "", textAfter: "reading?", hint: "She / love", a: "Does she love" },
+            { textBefore: "", textAfter: "writing?", hint: "They / practice", a: "Do they practice" },
+            { textBefore: "", textAfter: "learning?", hint: "We / enjoy", a: "Do we enjoy" },
+            { textBefore: "", textAfter: "studying?", hint: "You / like", a: "Do you like" },
+            { textBefore: "", textAfter: "working?", hint: "He / like", a: "Does he like" },
+            { textBefore: "", textAfter: "resting?", hint: "She / prefer", a: "Does she prefer" },
+            { textBefore: "", textAfter: "sleeping?", hint: "They / need", a: "Do they need" },
+            { textBefore: "", textAfter: "eating?", hint: "We / want", a: "Do we want" },
+            { textBefore: "", textAfter: "drinking?", hint: "You / need", a: "Do you need" },
+            { textBefore: "", textAfter: "talking?", hint: "He / like", a: "Does he like" },
+            { textBefore: "", textAfter: "listening?", hint: "She / prefer", a: "Does she prefer" },
+            { textBefore: "", textAfter: "watching?", hint: "They / enjoy", a: "Do they enjoy" },
+            { textBefore: "", textAfter: "waiting?", hint: "We / mind", a: "Do we mind" },
+            { textBefore: "", textAfter: "leaving?", hint: "You / want", a: "Do you want" },
+            { textBefore: "", textAfter: "staying?", hint: "He / prefer", a: "Does he prefer" },
+            { textBefore: "", textAfter: "moving?", hint: "They / plan", a: "Do they plan" }
+        ];
+
+        const bankEx5 = [
+            { textBefore: "My brother", textAfter: "football on Sundays.", hint: "play", a: "plays" },
+            { textBefore: "We", textAfter: "to school on Saturday.", hint: "not / go", a: "don't go" },
+            { textBefore: "", textAfter: "eating chocolate?", hint: "You / like", a: "Do you like" },
+            { textBefore: "I always", textAfter: "orange juice for breakfast.", hint: "drink", a: "drink" },
+            { textBefore: "She", textAfter: "a new book every month.", hint: "read", a: "reads" },
+            { textBefore: "They", textAfter: "scary movies.", hint: "not / watch", a: "don't watch" },
+            { textBefore: "", textAfter: "Italian or Spanish?", hint: "He / speak", a: "Does he speak" },
+            { textBefore: "The bus", textAfter: "at 8:15 sharp.", hint: "arrive", a: "arrives" },
+            { textBefore: "I", textAfter: "this difficult instruction.", hint: "not / understand", a: "don't understand" },
+            { textBefore: "He usually", textAfter: "early in the morning.", hint: "get up", a: "gets up" },
+            { textBefore: "We", textAfter: "a big English test tomorrow.", hint: "have", a: "have" },
+            { textBefore: "She", textAfter: "wearing hats.", hint: "not / like", a: "doesn't like" },
+            { textBefore: "My friends", textAfter: "me every weekend.", hint: "visit", a: "visit" },
+            { textBefore: "It", textAfter: "in summer here.", hint: "not / snow", a: "doesn't snow" },
+            { textBefore: "You", textAfter: "the piano very well.", hint: "play", a: "play" },
+            { textBefore: "She", textAfter: "in a hospital downtown.", hint: "work", a: "works" },
+            { textBefore: "I", textAfter: "meat on Fridays.", hint: "not / eat", a: "don't eat" },
+            { textBefore: "", textAfter: "the guitar?", hint: "He / play", a: "Does he play" },
+            { textBefore: "Cats", textAfter: "sleeping in the sun.", hint: "love", a: "love" },
+            { textBefore: "My sister", textAfter: "coffee in the morning.", hint: "drink", a: "drinks" },
+            { textBefore: "We", textAfter: "in a small village.", hint: "not / live", a: "don't live" },
+            { textBefore: "", textAfter: "English well?", hint: "They / speak", a: "Do they speak" },
+            { textBefore: "The train", textAfter: "at 6 PM.", hint: "leave", a: "leaves" },
+            { textBefore: "I", textAfter: "getting up late.", hint: "not / like", a: "don't like" },
+            { textBefore: "He always", textAfter: "his homework on time.", hint: "finish", a: "finishes" },
+            { textBefore: "You", textAfter: "a nice camera.", hint: "have", a: "have" },
+            { textBefore: "She", textAfter: "horror films.", hint: "not / watch", a: "doesn't watch" },
+            { textBefore: "", textAfter: "in London?", hint: "Your cousin / live", a: "Does your cousin live" },
+            { textBefore: "They sometimes", textAfter: "pizza for dinner.", hint: "order", a: "order" },
+            { textBefore: "It", textAfter: "much in spring.", hint: "not / rain", a: "doesn't rain" },
+            { textBefore: "My dog", textAfter: "fast.", hint: "run", a: "runs" },
+            { textBefore: "We", textAfter: "German at school.", hint: "learn", a: "learn" },
+            { textBefore: "You", textAfter: "the answer.", hint: "not / know", a: "don't know" },
+            { textBefore: "", textAfter: "early?", hint: "She / get up", a: "Does she get up" },
+            { textBefore: "He", textAfter: "a blue jacket today.", hint: "wear", a: "wears" },
+            { textBefore: "I", textAfter: "his name.", hint: "not / remember", a: "don't remember" },
+            { textBefore: "Children", textAfter: "playing games.", hint: "enjoy", a: "enjoy" },
+            { textBefore: "My mother", textAfter: "delicious cakes.", hint: "bake", a: "bakes" },
+            { textBefore: "We", textAfter: "much time.", hint: "not / have", a: "don't have" },
+            { textBefore: "", textAfter: "tennis?", hint: "They / play", a: "Do they play" },
+            { textBefore: "The sun", textAfter: "in the west.", hint: "not / set", a: "doesn't set" },
+            { textBefore: "You", textAfter: "very fast.", hint: "walk", a: "walk" },
+            { textBefore: "He", textAfter: "his car on Sundays.", hint: "wash", a: "washes" },
+            { textBefore: "She", textAfter: "any pets.", hint: "not / have", a: "doesn't have" },
+            { textBefore: "", textAfter: "coffee?", hint: "You / drink", a: "Do you drink" },
+            { textBefore: "I usually", textAfter: "at 7 AM.", hint: "wake up", a: "wake up" },
+            { textBefore: "They", textAfter: "hard during exams.", hint: "study", a: "study" },
+            { textBefore: "My father", textAfter: "late.", hint: "not / work", a: "doesn't work" },
+            { textBefore: "", textAfter: "here?", hint: "He / work", a: "Does he work" },
+            { textBefore: "We", textAfter: "fresh bread.", hint: "buy", a: "buy" },
+            { textBefore: "She", textAfter: "songs on the radio.", hint: "hear", a: "hears" },
+            { textBefore: "You", textAfter: "too much.", hint: "not / talk", a: "don't talk" },
+            { textBefore: "", textAfter: "rain in winter?", hint: "It / snow", a: "Does it snow" },
+            { textBefore: "The shop", textAfter: "at 8 PM.", hint: "close", a: "closes" },
+            { textBefore: "I", textAfter: "cold weather.", hint: "not / like", a: "don't like" },
+            { textBefore: "He", textAfter: "his room weekly.", hint: "clean", a: "cleans" },
+            { textBefore: "We", textAfter: "our grandparents often.", hint: "visit", a: "visit" },
+            { textBefore: "She", textAfter: "tea.", hint: "not / drink", a: "doesn't drink" },
+            { textBefore: "", textAfter: "your teacher?", hint: "You / respect", a: "Do you respect" },
+            { textBefore: "They", textAfter: "nice clothes.", hint: "wear", a: "wear" },
+            { textBefore: "My brother", textAfter: "milk.", hint: "not / like", a: "doesn't like" },
+            { textBefore: "It", textAfter: "warm today.", hint: "feel", a: "feels" },
+            { textBefore: "You", textAfter: "the rules.", hint: "not / follow", a: "don't follow" },
+            { textBefore: "", textAfter: "help?", hint: "She / need", a: "Does she need" },
+            { textBefore: "I", textAfter: "stories.", hint: "write", a: "write" },
+            { textBefore: "He", textAfter: "pictures.", hint: "not / draw", a: "doesn't draw" },
+            { textBefore: "We", textAfter: "our lunch at noon.", hint: "eat", a: "eat" },
+            { textBefore: "She", textAfter: "fast cars.", hint: "drive", a: "drives" },
+            { textBefore: "", textAfter: "jokes?", hint: "They / tell", a: "Do they tell" },
+            { textBefore: "The phone", textAfter: "often.", hint: "ring", a: "rings" },
+            { textBefore: "I", textAfter: "secrets.", hint: "not / tell", a: "don't tell" },
+            { textBefore: "You", textAfter: "smart.", hint: "look", a: "look" },
+            { textBefore: "He", textAfter: "music.", hint: "not / compose", a: "doesn't compose" },
+            { textBefore: "She", textAfter: "nice letters.", hint: "send", a: "sends" },
+            { textBefore: "", textAfter: "history?", hint: "We / study", a: "Do we study" },
+            { textBefore: "They", textAfter: "noise.", hint: "not / make", a: "don't make" },
+            { textBefore: "My cat", textAfter: "milk.", hint: "drink", a: "drinks" },
+            { textBefore: "I", textAfter: "busy now.", hint: "feel", a: "feel" },
+            { textBefore: "You", textAfter: "mistakes.", hint: "not / want", a: "don't want" },
+            { textBefore: "", textAfter: "ready?", hint: "He / feel", a: "Does he feel" }
+        ];
+
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function loadInlineQuiz(bank, containerId, scoreId, prefix) {
+            const container = document.getElementById(containerId);
+            const scoreDisplay = document.getElementById(scoreId);
+            container.innerHTML = '';
+            scoreDisplay.textContent = 'Punteggio: 0 / 5';
+
+            const shuffled = [...bank].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 5);
+
+            selected.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'question-item';
+                
+                itemDiv.innerHTML = `
+                    <div class="sentence-container">
+                        <span>${index + 1}.</span>
+                        ${item.textBefore ? `<span>${item.textBefore}</span>` : ''}
+                        <input type="text" class="inline-input" id="${prefix}-ans-${index}" placeholder="(${item.hint})">
+                        <span>${item.textAfter}</span>
+                        <button class="btn ${prefix === 'ex5' ? 'btn-mix' : ''}" onclick="checkInlineAnswer('${prefix}', ${index}, '${item.a.replace(/'/g, "\\'")}')">Verifica</button>
+                    </div>
+                    <div class="feedback" id="${prefix}-feedback-${index}"></div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function checkInlineAnswer(prefix, index, correctAnswer) {
+            const input = document.getElementById(`${prefix}-ans-${index}`);
+            const feedback = document.getElementById(`${prefix}-feedback-${index}`);
+            
+            const userVal = input.value.trim().toLowerCase().replace(/\.$/, '');
+            const correctVal = correctAnswer.trim().toLowerCase().replace(/\.$/, '');
+
+            if (userVal === "") {
+                feedback.textContent = "⚠️ Inserisci una risposta!";
+                feedback.className = "feedback incorrect";
+                return;
+            }
+
+            if (userVal === correctVal) {
+                feedback.textContent = "Corretto! 🎉";
+                feedback.className = "feedback correct";
+                input.disabled = true;
+                input.style.borderColor = "var(--success)";
+                updateScore(prefix);
+            } else {
+                feedback.textContent = `❌ Sbagliato. La risposta corretta era: "${correctAnswer}"`;
+                feedback.className = "feedback incorrect";
+                input.style.borderColor = "var(--error)";
+            }
+        }
+
+        function updateScore(prefix) {
+            const scoreId = `score-${prefix}`;
+            const scoreDisplay = document.getElementById(scoreId);
+            let current = parseInt(scoreDisplay.textContent.split('/')[0].replace('Punteggio:', '').trim());
+            current++;
+            scoreDisplay.textContent = `Punteggio: ${current} / 5`;
+        }
+
+        window.onload = function() {
+            loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1');
+            loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2');
+            loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3');
+            loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4');
+            loadInlineQuiz(bankEx5, 'container-ex5', 'score-ex5', 'ex5');
+        };
+    </script>
+</body>
+</html>
