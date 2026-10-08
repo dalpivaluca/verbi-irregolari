@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Present Continuous Hub - English Hub</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --border: #334155;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .back-nav {
+            align-self: flex-start;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto 20px auto;
+        }
+
+        .back-btn {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-hover);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+
+        header h1 {
+            font-size: 2.3rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.5;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border-color: var(--accent);
+        }
+
+        .tab-btn.mix-tab {
+            border-color: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .tab-btn.mix-tab.active {
+            background-color: #f59e0b;
+            color: var(--bg-color);
+            border-color: #f59e0b;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .exercise-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .exercise-card h2 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .instructions {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .question-item {
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+        }
+
+        .sentence-container {
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            line-height: 1.6;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .inline-input {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-bottom: 2px solid var(--accent);
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 6px 12px;
+            font-size: 1.05rem;
+            outline: none;
+            width: 210px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .inline-input::placeholder {
+            color: rgba(148, 163, 184, 0.45);
+            font-style: italic;
+            font-weight: normal;
+        }
+
+        .inline-input:focus {
+            border-color: var(--accent-hover);
+            background-color: rgba(56, 189, 248, 0.05);
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-mix {
+            background-color: #f59e0b;
+        }
+        .btn-mix:hover {
+            background-color: #d97706;
+        }
+
+        .feedback {
+            margin-top: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feedback.correct {
+            color: var(--success);
+        }
+
+        .feedback.incorrect {
+            color: var(--error);
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .score-display {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--accent);
+        }
+
+        footer {
+            margin-top: auto;
+            padding-top: 40px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="back-nav">
+        <a href="index.html" class="back-btn">← Torna alla Home</a>
+    </div>
+
+    <header>
+        <h1>Present Continuous Hub</h1>
+        <p>Esercizi sul Present Continuous: trasforma i verbi e completa le frasi inserendo la risposta corretta.</p>
+    </header>
+
+    <div class="container">
+        <!-- Tabs Navigazione -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('ex1', event)">1. Regole -ing</button>
+            <button class="tab-btn" onclick="switchTab('ex2', event)">2. Affermative</button>
+            <button class="tab-btn" onclick="switchTab('ex3', event)">3. Negative</button>
+            <button class="tab-btn" onclick="switchTab('ex4', event)">4. Interrogative</button>
+            <button class="tab-btn mix-tab" onclick="switchTab('ex5', event)">🔥 5. Mix Challenge</button>
+        </div>
+
+        <!-- Sezione 1: Regole -ing -->
+        <div id="ex1" class="tab-content active">
+            <div class="exercise-card">
+                <h2>1. Regole Ortografiche (-ing)</h2>
+                <p class="instructions">Aggiungi la desinenza -ing al verbo indicato tenendo conto delle regole.</p>
+                <div id="container-ex1"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex1">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1')">🔄 Altre 5 parole</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 2: Affermative -->
+        <div id="ex2" class="tab-content">
+            <div class="exercise-card">
+                <h2>2. Forma Affermativa</h2>
+                <p class="instructions">Completa la frase inserendo ausiliare e verbo coniugato.</p>
+                <div id="container-ex2"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex2">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 3: Negative -->
+        <div id="ex3" class="tab-content">
+            <div class="exercise-card">
+                <h2>3. Forma Negativa</h2>
+                <p class="instructions">Inserisci la forma negativa contratta e il verbo in -ing.</p>
+                <div id="container-ex3"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex3">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 4: Interrogative -->
+        <div id="ex4" class="tab-content">
+            <div class="exercise-card">
+                <h2>4. Forma Interrogativa</h2>
+                <p class="instructions">Scrivi la domanda corretta completando con l'ausiliare, il soggetto e il verbo.</p>
+                <div id="container-ex4"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex4">Punteggio: 0 / 5</span>
+                    <button class="btn" onclick="loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4')">🔄 Altre 5 frasi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione 5: Mix Challenge -->
+        <div id="ex5" class="tab-content">
+            <div class="exercise-card">
+                <h2>🔥 5. Mix Challenge (Tutte le forme)</h2>
+                <p class="instructions">Frasi miste sul Present Continuous.</p>
+                <div id="container-ex5"></div>
+                <div class="actions-bar">
+                    <span class="score-display" id="score-ex5" style="color: #f59e0b;">Punteggio: 0 / 5</span>
+                    <button class="btn btn-mix" onclick="loadInlineQuiz(bankEx5, 'container-ex5', 'score-ex5', 'ex5')">🔄 Altre 5 frasi miste</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 English Hub • Present Continuous Practice</p>
+    </footer>
+
+    <script>
+        // Bank 1: 80 Regole -ing uniche
+        const bankEx1 = [
+            { textBefore: "work ➔", textAfter: "", hint: "", a: "working" },
+            { textBefore: "play ➔", textAfter: "", hint: "", a: "playing" },
+            { textBefore: "write ➔", textAfter: "", hint: "", a: "writing" },
+            { textBefore: "dance ➔", textAfter: "", hint: "", a: "dancing" },
+            { textBefore: "run ➔", textAfter: "", hint: "", a: "running" },
+            { textBefore: "swim ➔", textAfter: "", hint: "", a: "swimming" },
+            { textBefore: "sit ➔", textAfter: "", hint: "", a: "sitting" },
+            { textBefore: "get ➔", textAfter: "", hint: "", a: "getting" },
+            { textBefore: "stop ➔", textAfter: "", hint: "", a: "stopping" },
+            { textBefore: "begin ➔", textAfter: "", hint: "", a: "beginning" },
+            { textBefore: "make ➔", textAfter: "", hint: "", a: "making" },
+            { textBefore: "take ➔", textAfter: "", hint: "", a: "taking" },
+            { textBefore: "give ➔", textAfter: "", hint: "", a: "giving" },
+            { textBefore: "come ➔", textAfter: "", hint: "", a: "coming" },
+            { textBefore: "have ➔", textAfter: "", hint: "", a: "having" },
+            { textBefore: "read ➔", textAfter: "", hint: "", a: "reading" },
+            { textBefore: "eat ➔", textAfter: "", hint: "", a: "eating" },
+            { textBefore: "drink ➔", textAfter: "", hint: "", a: "drinking" },
+            { textBefore: "sleep ➔", textAfter: "", hint: "", a: "sleeping" },
+            { textBefore: "cook ➔", textAfter: "", hint: "", a: "cooking" },
+            { textBefore: "listen ➔", textAfter: "", hint: "", a: "listening" },
+            { textBefore: "speak ➔", textAfter: "", hint: "", a: "speaking" },
+            { textBefore: "look ➔", textAfter: "", hint: "", a: "looking" },
+            { textBefore: "open ➔", textAfter: "", hint: "", a: "opening" },
+            { textBefore: "close ➔", textAfter: "", hint: "", a: "closing" },
+            { textBefore: "smile ➔", textAfter: "", hint: "", a: "smiling" },
+            { textBefore: "drive ➔", textAfter: "", hint: "", a: "driving" },
+            { textBefore: "ride ➔", textAfter: "", hint: "", a: "riding" },
+            { textBefore: "shine ➔", textAfter: "", hint: "", a: "shining" },
+            { textBefore: "hop ➔", textAfter: "", hint: "", a: "hopping" },
+            { textBefore: "cut ➔", textAfter: "", hint: "", a: "cutting" },
+            { textBefore: "put ➔", textAfter: "", hint: "", a: "putting" },
+            { textBefore: "let ➔", textAfter: "", hint: "", a: "letting" },
+            { textBefore: "hit ➔", textAfter: "", hint: "", a: "hitting" },
+            { textBefore: "jog ➔", textAfter: "", hint: "", a: "jogging" },
+            { textBefore: "travel ➔", textAfter: "", hint: "", a: "travelling" },
+            { textBefore: "visit ➔", textAfter: "", hint: "", a: "visiting" },
+            { textBefore: "study ➔", textAfter: "", hint: "", a: "studying" },
+            { textBefore: "cry ➔", textAfter: "", hint: "", a: "crying" },
+            { textBefore: "fly ➔", textAfter: "", hint: "", a: "flying" },
+            { textBefore: "die ➔", textAfter: "", hint: "", a: "dying" },
+            { textBefore: "lie ➔", textAfter: "", hint: "", a: "lying" },
+            { textBefore: "tie ➔", textAfter: "", hint: "", a: "tying" },
+            { textBefore: "forget ➔", textAfter: "", hint: "", a: "forgetting" },
+            { textBefore: "prefer ➔", textAfter: "", hint: "", a: "preferring" },
+            { textBefore: "plan ➔", textAfter: "", hint: "", a: "planning" },
+            { textBefore: "shop ➔", textAfter: "", hint: "", a: "shopping" },
+            { textBefore: "win ➔", textAfter: "", hint: "", a: "winning" },
+            { textBefore: "lose ➔", textAfter: "", hint: "", a: "losing" },
+            { textBefore: "use ➔", textAfter: "", hint: "", a: "using" },
+            { textBefore: "choose ➔", textAfter: "", hint: "", a: "choosing" },
+            { textBefore: "build ➔", textAfter: "", hint: "", a: "building" },
+            { textBefore: "clean ➔", textAfter: "", hint: "", a: "cleaning" },
+            { textBefore: "wash ➔", textAfter: "", hint: "", a: "washing" },
+            { textBefore: "watch ➔", textAfter: "", hint: "", a: "watching" },
+            { textBefore: "start ➔", textAfter: "", hint: "", a: "starting" },
+            { textBefore: "finish ➔", textAfter: "", hint: "", a: "finishing" },
+            { textBefore: "ask ➔", textAfter: "", hint: "", a: "asking" },
+            { textBefore: "answer ➔", textAfter: "", hint: "", a: "answering" },
+            { textBefore: "help ➔", textAfter: "", hint: "", a: "helping" },
+            { textBefore: "pay ➔", textAfter: "", hint: "", a: "paying" },
+            { textBefore: "stay ➔", textAfter: "", hint: "", a: "staying" },
+            { textBefore: "enjoy ➔", textAfter: "", hint: "", a: "enjoying" },
+            { textBefore: "try ➔", textAfter: "", hint: "", a: "trying" },
+            { textBefore: "carry ➔", textAfter: "", hint: "", a: "carrying" },
+            { textBefore: "hurry ➔", textAfter: "", hint: "", a: "hurrying" },
+            { textBefore: "fix ➔", textAfter: "", hint: "", a: "fixing" },
+            { textBefore: "mix ➔", textAfter: "", hint: "", a: "mixing" },
+            { textBefore: "box ➔", textAfter: "", hint: "", a: "boxing" },
+            { textBefore: "jump ➔", textAfter: "", hint: "", a: "jumping" },
+            { textBefore: "walk ➔", textAfter: "", hint: "", a: "walking" },
+            { textBefore: "talk ➔", textAfter: "", hint: "", a: "talking" },
+            { textBefore: "laugh ➔", textAfter: "", hint: "", a: "laughing" },
+            { textBefore: "shout ➔", textAfter: "", hint: "", a: "shouting" },
+            { textBefore: "whisper ➔", textAfter: "", hint: "", a: "whispering" },
+            { textBefore: "dream ➔", textAfter: "", hint: "", a: "dreaming" },
+            { textBefore: "hope ➔", textAfter: "", hint: "", a: "hoping" },
+            { textBefore: "agree ➔", textAfter: "", hint: "", a: "agreeing" },
+            { textBefore: "control ➔", textAfter: "", hint: "", a: "controlling" },
+            { textBefore: "admit ➔", textAfter: "", hint: "", a: "admitting" }
+        ];
+
+        // Bank 2: 80 Affermative scritte per esteso ed uniche
+        const bankEx2 = [
+            { textBefore: "I", textAfter: "a book right now.", hint: "(read)", a: "am reading" },
+            { textBefore: "You", textAfter: "English very well.", hint: "(learn)", a: "are learning" },
+            { textBefore: "He", textAfter: "football in the park.", hint: "(play)", a: "is playing" },
+            { textBefore: "She", textAfter: "dinner for us.", hint: "(cook)", a: "is cooking" },
+            { textBefore: "It", textAfter: "outside right now.", hint: "(rain)", a: "is raining" },
+            { textBefore: "We", textAfter: "for the exam.", hint: "(study)", a: "are studying" },
+            { textBefore: "They", textAfter: "to music in their room.", hint: "(listen)", a: "are listening" },
+            { textBefore: "My brother", textAfter: "his car.", hint: "(wash)", a: "is washing" },
+            { textBefore: "The children", textAfter: "in the garden.", hint: "(play)", a: "are playing" },
+            { textBefore: "My mother", textAfter: "a cake.", hint: "(make)", a: "is making" },
+            { textBefore: "The cat", textAfter: "on the sofa.", hint: "(sleep)", a: "is sleeping" },
+            { textBefore: "You and I", textAfter: "a film.", hint: "(watch)", a: "are watching" },
+            { textBefore: "The teacher", textAfter: "on the whiteboard.", hint: "(write)", a: "is writing" },
+            { textBefore: "My friends", textAfter: "in Italy this summer.", hint: "(travel)", a: "are travelling" },
+            { textBefore: "The sun", textAfter: "brightly today.", hint: "(shine)", a: "is shining" },
+            { textBefore: "I", textAfter: "a letter to my friend.", hint: "(write)", a: "am writing" },
+            { textBefore: "You", textAfter: "too fast!", hint: "(run)", a: "are running" },
+            { textBefore: "He", textAfter: "in the swimming pool.", hint: "(swim)", a: "is swimming" },
+            { textBefore: "She", textAfter: "a blue dress.", hint: "(wear)", a: "is wearing" },
+            { textBefore: "We", textAfter: "lunch at a restaurant.", hint: "(have)", a: "are having" },
+            { textBefore: "They", textAfter: "their homework.", hint: "(do)", a: "are doing" },
+            { textBefore: "The baby", textAfter: "because he is hungry.", hint: "(cry)", a: "is crying" },
+            { textBefore: "Paul", textAfter: "his bike to school.", hint: "(ride)", a: "is riding" },
+            { textBefore: "The birds", textAfter: "in the sky.", hint: "(fly)", a: "are flying" },
+            { textBefore: "I", textAfter: "heavy clothes today.", hint: "(wear)", a: "am wearing" },
+            { textBefore: "You", textAfter: "a great job.", hint: "(do)", a: "are doing" },
+            { textBefore: "Mark", textAfter: "computer games.", hint: "(play)", a: "is playing" },
+            { textBefore: "Anna", textAfter: "to pop music.", hint: "(listen)", a: "is listening" },
+            { textBefore: "We", textAfter: "our new house.", hint: "(paint)", a: "are painting" },
+            { textBefore: "The students", textAfter: "to the professor.", hint: "(listen)", a: "are listening" },
+            { textBefore: "My dad", textAfter: "the newspaper.", hint: "(read)", a: "is reading" },
+            { textBefore: "The phone", textAfter: ".", hint: "(ring)", a: "is ringing" },
+            { textBefore: "I", textAfter: "to my boss on the phone.", hint: "(talk)", a: "am talking" },
+            { textBefore: "You", textAfter: "very quietly.", hint: "(speak)", a: "are speaking" },
+            { textBefore: "He", textAfter: "his bedroom.", hint: "(clean)", a: "is cleaning" },
+            { textBefore: "She", textAfter: "a nice song.", hint: "(sing)", a: "is singing" },
+            { textBefore: "It", textAfter: "colder and colder.", hint: "(get)", a: "is getting" },
+            { textBefore: "We", textAfter: "our grandparents.", hint: "(visit)", a: "are visiting" },
+            { textBefore: "They", textAfter: "a new bridge.", hint: "(build)", a: "are building" },
+            { textBefore: "The dog", hint: "(bark)", textAfter: "at the postman.", a: "is barking" },
+            { textBefore: "I", textAfter: "for my keys.", hint: "(look)", a: "am looking" },
+            { textBefore: "You", textAfter: "so well today.", hint: "(dance)", a: "are dancing" },
+            { textBefore: "Tom", textAfter: "orange juice.", hint: "(drink)", a: "is drinking" },
+            { textBefore: "Lucy", textAfter: "her hair.", hint: "(wash)", a: "is washing" },
+            { textBefore: "We", textAfter: "our bags for the trip.", hint: "(pack)", a: "are packing" },
+            { textBefore: "The men", textAfter: "hard at the office.", hint: "(work)", a: "are working" },
+            { textBefore: "A cold wind", textAfter: ".", hint: "(blow)", a: "is blowing" },
+            { textBefore: "I", textAfter: "an email.", hint: "(type)", a: "am typing" },
+            { textBefore: "You", textAfter: "a nice story.", hint: "(tell)", a: "are telling" },
+            { textBefore: "John", textAfter: "his teeth.", hint: "(brush)", a: "is brushing" },
+            { textBefore: "Sara", textAfter: "a picture.", hint: "(draw)", a: "is drawing" },
+            { textBefore: "We", textAfter: "football outside.", hint: "(play)", a: "are playing" },
+            { textBefore: "The horses", textAfter: "in the meadow.", hint: "(run)", a: "are running" },
+            { textBefore: "I", textAfter: "to the radio.", hint: "(listen)", a: "am listening" },
+            { textBefore: "You", textAfter: "a heavy box.", hint: "(carry)", a: "are carrying" },
+            { textBefore: "He", textAfter: "his lunch.", hint: "(eat)", a: "is eating" },
+            { textBefore: "She", textAfter: "a new language.", hint: "(learn)", a: "is learning" },
+            { textBefore: "The river", textAfter: "very fast.", hint: "(flow)", a: "is flowing" },
+            { textBefore: "We", textAfter: "our holiday.", hint: "(plan)", a: "are planning" },
+            { textBefore: "They", textAfter: "groceries.", hint: "(shop)", a: "are shopping" },
+            { textBefore: "I", textAfter: "in a modern hotel.", hint: "(stay)", a: "am staying" },
+            { textBefore: "You", textAfter: "delicious food.", hint: "(taste)", a: "are tasting" },
+            { textBefore: "The mechanic", textAfter: "the engine.", hint: "(fix)", a: "is fixing" },
+            { textBefore: "The chef", textAfter: "new recipes.", hint: "(try)", a: "is trying" },
+            { textBefore: "We", textAfter: "to catch the train.", hint: "(hurry)", a: "are hurrying" },
+            { textBefore: "They", textAfter: "a lot of noise.", hint: "(make)", a: "are making" },
+            { textBefore: "I", textAfter: "at the map.", hint: "(look)", a: "am looking" },
+            { textBefore: "You", textAfter: "a good point.", hint: "(make)", a: "are making" },
+            { textBefore: "He", textAfter: "a grey suit.", hint: "(wear)", a: "is wearing" },
+            { textBefore: "She", textAfter: "the door.", hint: "(open)", a: "is opening" },
+            { textBefore: "It", textAfter: "dark very early.", hint: "(get)", a: "is getting" },
+            { textBefore: "We", textAfter: "a barbecue tonight.", hint: "(have)", a: "are having" },
+            { textBefore: "They", textAfter: "their friends.", hint: "(meet)", a: "are meeting" },
+            { textBefore: "I", textAfter: "my favorite song.", hint: "(sing)", a: "am singing" },
+            { textBefore: "You", textAfter: "a wonderful game.", hint: "(play)", a: "are playing" },
+            { textBefore: "The train", textAfter: "now.", hint: "(arrive)", a: "is arriving" },
+            { textBefore: "The plane", textAfter: "at the airport.", hint: "(land)", a: "is landing" },
+            { textBefore: "We", textAfter: "good progress.", hint: "(make)", a: "are making" },
+            { textBefore: "They", textAfter: "a break.", hint: "(take)", a: "are taking" },
+            { textBefore: "I", textAfter: "ready to go.", hint: "(get)", a: "am getting" }
+        ];
+
+        // Bank 3: 80 Negative scritte per esteso ed uniche
+        const bankEx3 = [
+            { textBefore: "I", textAfter: "to music right now.", hint: "(listen)", a: "am not listening" },
+            { textBefore: "You", textAfter: "attention in class.", hint: "(pay)", a: "aren't paying" },
+            { textBefore: "He", textAfter: "hard today.", hint: "(work)", a: "isn't working" },
+            { textBefore: "She", textAfter: "a red coat.", hint: "(wear)", a: "isn't wearing" },
+            { textBefore: "It", textAfter: "at the moment.", hint: "(snow)", a: "isn't snowing" },
+            { textBefore: "We", textAfter: "television now.", hint: "(watch)", a: "aren't watching" },
+            { textBefore: "They", textAfter: "football today.", hint: "(play)", a: "aren't playing" },
+            { textBefore: "My friend", textAfter: "English with me.", hint: "(speak)", a: "isn't speaking" },
+            { textBefore: "The children", textAfter: "in the street.", hint: "(run)", a: "aren't running" },
+            { textBefore: "Tom", textAfter: "his homework.", hint: "(do)", a: "isn't doing" },
+            { textBefore: "I", textAfter: "any coffee.", hint: "(drink)", a: "am not drinking" },
+            { textBefore: "You", textAfter: "the truth.", hint: "(tell)", a: "aren't telling" },
+            { textBefore: "She", textAfter: "meat today.", hint: "(eat)", a: "isn't eating" },
+            { textBefore: "We", textAfter: "fast enough.", hint: "(walk)", a: "aren't walking" },
+            { textBefore: "They", textAfter: "in the sea.", hint: "(swim)", a: "aren't swimming" },
+            { textBefore: "The dog", textAfter: ".", hint: "(bark)", a: "isn't barking" },
+            { textBefore: "My mother", textAfter: "dinner tonight.", hint: "(cook)", a: "isn't cooking" },
+            { textBefore: "The sun", textAfter: "today.", hint: "(shine)", a: "isn't shining" },
+            { textBefore: "I", textAfter: "well this morning.", hint: "(feel)", a: "am not feeling" },
+            { textBefore: "You", textAfter: "to me.", hint: "(listen)", a: "aren't listening" },
+            { textBefore: "He", textAfter: "a hat.", hint: "(wear)", a: "isn't wearing" },
+            { textBefore: "She", textAfter: "a book.", hint: "(read)", a: "isn't reading" },
+            { textBefore: "We", textAfter: "any noise.", hint: "(make)", a: "aren't making" },
+            { textBefore: "The students", textAfter: "tests today.", hint: "(write)", a: "aren't writing" },
+            { textBefore: "My dad", textAfter: "the car.", hint: "(drive)", a: "isn't driving" },
+            { textBefore: "The baby", textAfter: "now.", hint: "(cry)", a: "isn't crying" },
+            { textBefore: "I", textAfter: "a tie.", hint: "(wear)", a: "am not wearing" },
+            { textBefore: "You", textAfter: "the rules.", hint: "(follow)", a: "aren't following" },
+            { textBefore: "He", textAfter: "computer games.", hint: "(play)", a: "isn't playing" },
+            { textBefore: "She", textAfter: "piano today.", hint: "(practice)", a: "isn't practicing" },
+            { textBefore: "We", textAfter: "any plans.", hint: "(make)", a: "aren't making" },
+            { textBefore: "They", textAfter: "hard.", hint: "(study)", a: "aren't studying" },
+            { textBefore: "The wind", textAfter: ".", hint: "(blow)", a: "isn't blowing" },
+            { textBefore: "I", textAfter: "glasses.", hint: "(wear)", a: "am not wearing" },
+            { textBefore: "You", textAfter: "careful.", hint: "(be)", a: "aren't being" },
+            { textBefore: "Mark", textAfter: "his room.", hint: "(clean)", a: "isn't cleaning" },
+            { textBefore: "Anna", textAfter: "to the party.", hint: "(come)", a: "isn't coming" },
+            { textBefore: "We", textAfter: "any mistakes.", hint: "(make)", a: "aren't making" },
+            { textBefore: "The phone", textAfter: ".", hint: "(ring)", a: "isn't ringing" },
+            { textBefore: "I", textAfter: "shoes.", hint: "(wear)", a: "am not wearing" },
+            { textBefore: "You", textAfter: "the guitar.", hint: "(play)", a: "aren't playing" },
+            { textBefore: "He", textAfter: "his lunch.", hint: "(eat)", a: "isn't eating" },
+            { textBefore: "She", textAfter: "her coat.", hint: "(take)", a: "isn't taking" },
+            { textBefore: "It", textAfter: "properly.", hint: "(work)", a: "isn't working" },
+            { textBefore: "We", textAfter: "any cheese.", hint: "(buy)", a: "aren't buying" },
+            { textBefore: "They", textAfter: "in the office.", hint: "(sit)", a: "aren't sitting" },
+            { textBefore: "The cat", textAfter: "milk.", hint: "(drink)", a: "isn't drinking" },
+            { textBefore: "I", textAfter: "anything special.", hint: "(do)", a: "am not doing" },
+            { textBefore: "You", textAfter: "on time.", hint: "(arrive)", a: "aren't arriving" },
+            { textBefore: "John", textAfter: "his jacket.", hint: "(wear)", a: "isn't wearing" },
+            { textBefore: "Sara", textAfter: "coffee.", hint: "(drink)", a: "isn't drinking" },
+            { textBefore: "We", textAfter: "any arguments.", hint: "(start)", a: "aren't starting" },
+            { textBefore: "The girls", textAfter: "tennis.", hint: "(play)", a: "aren't playing" },
+            { textBefore: "I", textAfter: "a hat today.", hint: "(wear)", a: "am not wearing" },
+            { textBefore: "You", textAfter: "the door.", hint: "(lock)", a: "aren't locking" },
+            { textBefore: "He", textAfter: "his bike.", hint: "(ride)", a: "isn't riding" },
+            { textBefore: "She", textAfter: "a song.", hint: "(sing)", a: "isn't singing" },
+            { textBefore: "The train", textAfter: "yet.", hint: "(arrive)", a: "isn't arriving" },
+            { textBefore: "We", textAfter: "any risks.", hint: "(take)", a: "aren't taking" },
+            { textBefore: "They", textAfter: "their lunch.", hint: "(eat)", a: "aren't eating" },
+            { textBefore: "I", textAfter: "fast.", hint: "(run)", a: "am not running" },
+            { textBefore: "You", textAfter: "the truth.", hint: "(speak)", a: "aren't speaking" },
+            { textBefore: "The mechanic", textAfter: "the car.", hint: "(fix)", a: "isn't fixing" },
+            { textBefore: "The chef", textAfter: "soup.", hint: "(cook)", a: "isn't cooking" },
+            { textBefore: "We", textAfter: "any problems.", hint: "(have)", a: "aren't having" },
+            { textBefore: "They", textAfter: "the instructions.", hint: "(read)", a: "aren't reading" },
+            { textBefore: "I", textAfter: "at the screen.", hint: "(look)", a: "am not looking" },
+            { textBefore: "You", textAfter: "a sweater.", hint: "(wear)", a: "aren't wearing" },
+            { textBefore: "He", textAfter: "his hands.", hint: "(wash)", a: "isn't washing" },
+            { textBefore: "She", textAfter: "a letter.", hint: "(write)", a: "isn't writing" },
+            { textBefore: "It", textAfter: "cold today.", hint: "(get)", a: "isn't getting" },
+            { textBefore: "We", textAfter: "any noise.", hint: "(hear)", a: "aren't hearing" },
+            { textBefore: "They", textAfter: "their friends.", hint: "(meet)", a: "aren't meeting" },
+            { textBefore: "I", textAfter: "much money.", hint: "(spend)", a: "am not spending" },
+            { textBefore: "You", textAfter: "a good job.", hint: "(do)", a: "aren't doing" },
+            { textBefore: "The plane", textAfter: "now.", hint: "(land)", a: "isn't landing" },
+            { textBefore: "The birds", textAfter: ".", hint: "(fly)", a: "aren't flying" },
+            { textBefore: "We", textAfter: "any mistakes.", hint: "(repeat)", a: "aren't repeating" },
+            { textBefore: "They", textAfter: "any questions.", hint: "(ask)", a: "aren't asking" },
+            { textBefore: "I", textAfter: "any tired.", hint: "(feel)", a: "am not feeling" }
+        ];
+
+        // Bank 4: 80 Interrogative scritte per esteso ed uniche
+        const bankEx4 = [
+            { textBefore: "", textAfter: "hard?", hint: "(I / work)", a: "am i working" },
+            { textBefore: "", textAfter: "tennis?", hint: "(you / play)", a: "are you playing" },
+            { textBefore: "", textAfter: "a book?", hint: "(he / read)", a: "is he reading" },
+            { textBefore: "", textAfter: "dinner?", hint: "(she / cook)", a: "is she cooking" },
+            { textBefore: "", textAfter: "outside?", hint: "(it / rain)", a: "is it raining" },
+            { textBefore: "", textAfter: "the match?", hint: "(we / win)", a: "are we winning" },
+            { textBefore: "", textAfter: "now?", hint: "(they / sleep)", a: "are they sleeping" },
+            { textBefore: "", textAfter: "English?", hint: "(Tom / study)", a: "is tom studying" },
+            { textBefore: "", textAfter: "music?", hint: "(you / listen)", a: "are you listening" },
+            { textBefore: "", textAfter: "fast?", hint: "(he / run)", a: "is he running" },
+            { textBefore: "", textAfter: "a jacket?", hint: "(she / wear)", a: "is she wearing" },
+            { textBefore: "", textAfter: "tv?", hint: "(they / watch)", a: "are they watching" },
+            { textBefore: "", textAfter: "well?", hint: "(I / swim)", a: "am i swimming" },
+            { textBefore: "", textAfter: "lunch?", hint: "(we / eat)", a: "are we eating" },
+            { textBefore: "", textAfter: "to me?", hint: "(you / talk)", a: "are you talking" },
+            { textBefore: "", textAfter: "a car?", hint: "(he / drive)", a: "is he driving" },
+            { textBefore: "", textAfter: "a letter?", hint: "(she / write)", a: "is she writing" },
+            { textBefore: "", textAfter: "football?", hint: "(they / play)", a: "are they playing" },
+            { textBefore: "", textAfter: "well?", hint: "(it / work)", a: "is it working" },
+            { textBefore: "", textAfter: "now?", hint: "(we / leave)", a: "are we leaving" },
+            { textBefore: "", textAfter: "coffee?", hint: "(I / drink)", a: "am i drinking" },
+            { textBefore: "", textAfter: "good?", hint: "(you / feel)", a: "are you feeling" },
+            { textBefore: "", textAfter: "a song?", hint: "(he / sing)", a: "is he singing" },
+            { textBefore: "", textAfter: "her room?", hint: "(she / clean)", a: "is she cleaning" },
+            { textBefore: "", textAfter: "snow?", hint: "(it / snow)", a: "is it snowing" },
+            { textBefore: "", textAfter: "right?", hint: "(we / do)", a: "are we doing" },
+            { textBefore: "", textAfter: "late?", hint: "(they / arrive)", a: "are they arriving" },
+            { textBefore: "", textAfter: "a hat?", hint: "(Tom / wear)", a: "is tom wearing" },
+            { textBefore: "", textAfter: "to school?", hint: "(you / go)", a: "are you going" },
+            { textBefore: "", textAfter: "breakfast?", hint: "(he / make)", a: "is he making" },
+            { textBefore: "", textAfter: "sad?", hint: "(she / cry)", a: "is she crying" },
+            { textBefore: "", textAfter: "loudly?", hint: "(they / shout)", a: "are they shouting" },
+            { textBefore: "", textAfter: "correctly?", hint: "(I / think)", a: "am i thinking" },
+            { textBefore: "", textAfter: "ready?", hint: "(we / get)", a: "are we getting" },
+            { textBefore: "", textAfter: "a bike?", hint: "(you / ride)", a: "are you riding" },
+            { textBefore: "", textAfter: "a tie?", hint: "(he / wear)", a: "is he wearing" },
+            { textBefore: "", textAfter: "tea?", hint: "(she / drink)", a: "is she drinking" },
+            { textBefore: "", textAfter: "fast?", hint: "(it / move)", a: "is it moving" },
+            { textBefore: "", textAfter: "jokes?", hint: "(they / tell)", a: "are they telling" },
+            { textBefore: "", textAfter: "right?", hint: "(I / act)", a: "am i acting" },
+            { textBefore: "", textAfter: "today?", hint: "(you / work)", a: "are you working" },
+            { textBefore: "", textAfter: "a game?", hint: "(he / play)", a: "is he playing" },
+            { textBefore: "", textAfter: "flowers?", hint: "(she / buy)", a: "is she buying" },
+            { textBefore: "", textAfter: "well?", hint: "(they / sleep)", a: "are they sleeping" },
+            { textBefore: "", textAfter: "good?", hint: "(we / look)", a: "are we looking" },
+            { textBefore: "", textAfter: "glasses?", hint: "(I / wear)", a: "am i wearing" },
+            { textBefore: "", textAfter: "the truth?", hint: "(you / speak)", a: "are you speaking" },
+            { textBefore: "", textAfter: "soup?", hint: "(he / eat)", a: "is he eating" },
+            { textBefore: "", textAfter: "music?", hint: "(she / hear)", a: "is she hearing" },
+            { textBefore: "", textAfter: "soon?", hint: "(it / end)", a: "is it ending" },
+            { textBefore: "", textAfter: "hurry?", hint: "(we / hurry)", a: "are we hurrying" },
+            { textBefore: "", textAfter: "help?", hint: "(they / need)", a: "are they needing" },
+            { textBefore: "", textAfter: "right?", hint: "(I / drive)", a: "am i driving" },
+            { textBefore: "", textAfter: "jokes?", hint: "(you / make)", a: "are you making" },
+            { textBefore: "", textAfter: "his car?", hint: "(he / wash)", a: "is he washing" },
+            { textBefore: "", textAfter: "her hair?", hint: "(she / brush)", a: "is she brushing" },
+            { textBefore: "", textAfter: "hard?", hint: "(they / study)", a: "are they studying" },
+            { textBefore: "", textAfter: "ready?", hint: "(we / wait)", a: "are we waiting" },
+            { textBefore: "", textAfter: "a picture?", hint: "(I / draw)", a: "am i drawing" },
+            { textBefore: "", textAfter: "well?", hint: "(you / dance)", a: "are you dancing" },
+            { textBefore: "", textAfter: "a computer?", hint: "(he / use)", a: "is he using" },
+            { textBefore: "", textAfter: "a song?", hint: "(she / sing)", a: "is she singing" },
+            { textBefore: "", textAfter: "brightly?", hint: "(it / shine)", a: "is it shining" },
+            { textBefore: "", textAfter: "notes?", hint: "(we / take)", a: "are we taking" },
+            { textBefore: "", textAfter: "plans?", hint: "(they / make)", a: "are they making" },
+            { textBefore: "", textAfter: "shoes?", hint: "(I / wear)", a: "am i wearing" },
+            { textBefore: "", textAfter: "attention?", hint: "(you / pay)", a: "are you paying" },
+            { textBefore: "", textAfter: "his lunch?", hint: "(he / eat)", a: "is he eating" },
+            { textBefore: "", textAfter: "her coat?", hint: "(she / wear)", a: "is she wearing" },
+            { textBefore: "", textAfter: "heavy?", hint: "(it / rain)", a: "is it raining" },
+            { textBefore: "", textAfter: "well?", hint: "(we / cook)", a: "are we cooking" },
+            { textBefore: "", textAfter: "friends?", hint: "(they / meet)", a: "are they meeting" },
+            { textBefore: "", textAfter: "fast?", hint: "(I / run)", a: "am i running" },
+            { textBefore: "", textAfter: "ok?", hint: "(you / feel)", a: "are you feeling" },
+            { textBefore: "", textAfter: "his room?", hint: "(he / clean)", a: "is he cleaning" },
+            { textBefore: "", textAfter: "a test?", hint: "(she / write)", a: "is she writing" },
+            { textBefore: "", textAfter: "windy?", hint: "(it / blow)", a: "is it blowing" },
+            { textBefore: "", textAfter: "correct?", hint: "(we / think)", a: "are we thinking" },
+            { textBefore: "", textAfter: "vacation?", hint: "(they / plan)", a: "are they planning" },
+            { textBefore: "", textAfter: "sure?", hint: "(I / stand)", a: "am i standing" }
+        ];
+
+        // Bank 5: 80 Mix Challenge scritte per esteso ed uniche
+        const bankEx5 = [
+            { textBefore: "She", hint: "(She / cook)", a: "is cooking", after: "lunch right now." },
+            { textBefore: "They", hint: "(They / listen)", a: "aren't listening", after: "to the teacher." },
+            { textBefore: "", hint: "(you / enjoy)", a: "are you enjoying", after: "the party?" },
+            { textBefore: "I", hint: "(I / run)", a: "am running", after: "in the park." },
+            { textBefore: "He", hint: "(He / wear)", a: "isn't wearing", after: "a jacket today." },
+            { textBefore: "", hint: "(it / rain)", a: "is it raining", after: "at the moment?" },
+            { textBefore: "We", hint: "(We / study)", a: "are studying", after: "for the exam." },
+            { textBefore: "The dog", hint: "(The dog / sleep)", a: "is sleeping", after: "under the bed." },
+            { textBefore: "You", hint: "(You / read)", a: "are reading", after: "an interesting book." },
+            { textBefore: "", hint: "(she / work)", a: "is she working", after: "today?" },
+            { textBefore: "My friends", hint: "(My friends / travel)", a: "are travelling", after: "in Spain." },
+            { textBefore: "I", hint: "(I / drink)", a: "am not drinking", after: "coffee now." },
+            { textBefore: "Tom", hint: "(Tom / play)", a: "is playing", after: "tennis with Paul." },
+            { textBefore: "", hint: "(they / watch)", a: "are they watching", after: "tv?" },
+            { textBefore: "The sun", hint: "(The sun / shine)", a: "is shining", after: "brightly." },
+            { textBefore: "We", hint: "(We / make)", a: "aren't making", after: "any noise." },
+            { textBefore: "Anna", hint: "(Anna / write)", a: "is writing", after: "an email." },
+            { textBefore: "", hint: "(he / swim)", a: "is he swimming", after: "in the pool?" },
+            { textBefore: "You", hint: "(You / listen)", a: "aren't listening", after: "to me." },
+            { textBefore: "The baby", hint: "(The baby / cry)", a: "is crying", after: "loudly." },
+            { textBefore: "I", hint: "(I / wear)", a: "am wearing", after: "a blue shirt." },
+            { textBefore: "They", hint: "(They / clean)", a: "aren't cleaning", after: "their house." },
+            { textBefore: "", hint: "(we / win)", a: "are we winning", after: "the game?" },
+            { textBefore: "My dad", hint: "(My dad / wash)", a: "is washing", after: "his car." },
+            { textBefore: "She", hint: "(She / eat)", a: "isn't eating", after: "her lunch." },
+            { textBefore: "", hint: "(it / snow)", a: "is it snowing", after: "outside?" },
+            { textBefore: "The students", hint: "(The students / write)", a: "are writing", after: "notes." },
+            { textBefore: "I", hint: "(I / work)", a: "am working", after: "hard this week." },
+            { textBefore: "You", hint: "(You / drive)", a: "aren't driving", after: "too fast." },
+            { textBefore: "He", hint: "(He / sing)", a: "is singing", after: "a nice song." },
+            { textBefore: "", hint: "(they / come)", a: "are they coming", after: "with us?" },
+            { textBefore: "We", hint: "(We / have)", a: "are having", after: "a good time." },
+            { textBefore: "The cat", hint: "(The cat / eat)", a: "is eating", after: "its food." },
+            { textBefore: "Sara", hint: "(Sara / wear)", a: "is wearing", after: "a red dress." },
+            { textBefore: "", hint: "(you / speak)", a: "are you speaking", after: "English?" },
+            { textBefore: "I", hint: "(I / look)", a: "am looking", after: "for my keys." },
+            { textBefore: "They", hint: "(They / play)", a: "aren't playing", after: "football." },
+            { textBefore: "He", hint: "(He / do)", a: "is doing", after: "his homework." },
+            { textBefore: "", hint: "(she / sleep)", a: "is she sleeping", after: "now?" },
+            { textBefore: "We", hint: "(We / plan)", a: "are planning", after: "a trip." },
+            { textBefore: "The phone", hint: "(The phone / ring)", a: "is ringing", after: "." },
+            { textBefore: "You", hint: "(You / make)", a: "are making", after: "a mistake." },
+            { textBefore: "I", hint: "(I / feel)", a: "am not feeling", after: "well." },
+            { textBefore: "", hint: "(they / wait)", a: "are they waiting", after: "for the bus?" },
+            { textBefore: "The children", hint: "(The children / run)", a: "are running", after: "outside." },
+            { textBefore: "Mark", hint: "(Mark / read)", a: "is reading", after: "a magazine." },
+            { textBefore: "She", hint: "(She / cook)", a: "isn't cooking", after: "dinner tonight." },
+            { textBefore: "", hint: "(it / work)", a: "is it working", after: "properly?" },
+            { textBefore: "We", hint: "(We / watch)", a: "are watching", after: "a movie." },
+            { textBefore: "They", hint: "(They / buy)", a: "aren't buying", after: "anything." },
+            { textBefore: "I", hint: "(I / study)", a: "am studying", after: "French." },
+            { textBefore: "You", hint: "(You / wear)", a: "aren't wearing", after: "a coat." },
+            { textBefore: "He", hint: "(He / fix)", a: "is fixing", after: "the bike." },
+            { textBefore: "", hint: "(she / wear)", a: "is she wearing", after: "a hat?" },
+            { textBefore: "The river", hint: "(The river / flow)", a: "is flowing", after: "fast." },
+            { textBefore: "We", hint: "(We / stay)", a: "are staying", after: "at a hotel." },
+            { textBefore: "My mother", hint: "(My mother / bake)", a: "is baking", after: "a cake." },
+            { textBefore: "", hint: "(you / do)", a: "are you doing", after: "right now?" },
+            { textBefore: "I", hint: "(I / listen)", a: "am listening", after: "to the radio." },
+            { textBefore: "They", hint: "(They / study)", a: "aren't studying", after: "hard." },
+            { textBefore: "He", hint: "(He / take)", a: "is taking", after: "photos." },
+            { textBefore: "She", hint: "(She / paint)", a: "is painting", after: "a picture." },
+            { textBefore: "", hint: "(it / rain)", a: "is it raining", after: "hard?" },
+            { textBefore: "We", hint: "(We / leave)", a: "are leaving", after: "soon." },
+            { textBefore: "The dog", hint: "(The dog / bark)", a: "is barking", after: "at the cat." },
+            { textBefore: "You", hint: "(You / tell)", a: "aren't telling", after: "the truth." },
+            { textBefore: "I", hint: "(I / write)", a: "am writing", after: "a letter." },
+            { textBefore: "Tom", hint: "(Tom / clean)", a: "is cleaning", after: "his room." },
+            { textBefore: "", hint: "(they / play)", a: "are they playing", after: "tennis?" },
+            { textBefore: "She", hint: "(She / sing)", a: "isn't singing", after: "today." },
+            { textBefore: "We", hint: "(We / meet)", a: "are meeting", after: "our friends." },
+            { textBefore: "The train", hint: "(The train / arrive)", a: "is arriving", after: "now." },
+            { textBefore: "You", hint: "(You / check)", a: "are checking", after: "your email." },
+            { textBefore: "I", hint: "(I / spend)", a: "am not spending", after: "much money." },
+            { textBefore: "", hint: "(he / wear)", a: "is he wearing", after: "a suit?" },
+            { textBefore: "They", hint: "(They / travel)", a: "aren't travelling", after: "abroad." },
+            { textBefore: "The wind", hint: "(The wind / blow)", a: "is blowing", after: "strongly." },
+            { textBefore: "We", hint: "(We / try)", a: "are trying", after: "our best." },
+            { textBefore: "She", hint: "(She / smile)", a: "is smiling", after: "at you." },
+            { textBefore: "", hint: "(you / sleep)", a: "are you sleeping", after: "?" }
+        ];
+
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function loadInlineQuiz(bank, containerId, scoreId, prefix) {
+            const container = document.getElementById(containerId);
+            const scoreDisplay = document.getElementById(scoreId);
+            container.innerHTML = '';
+            scoreDisplay.textContent = 'Punteggio: 0 / 5';
+
+            const shuffled = [...bank].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 5);
+
+            selected.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'question-item';
+                
+                let showSubjectBefore = (prefix === 'ex4') ? false : (item.textBefore !== "");
+
+                itemDiv.innerHTML = `
+                    <div class="sentence-container">
+                        <span>${index + 1}.</span>
+                        ${showSubjectBefore ? `<span>${item.textBefore}</span>` : ''}
+                        <input type="text" class="inline-input" id="${prefix}-ans-${index}" placeholder="${item.hint}">
+                        <span>${item.textAfter}</span>
+                        <button class="btn ${prefix === 'ex5' ? 'btn-mix' : ''}" onclick="checkInlineAnswer('${prefix}', ${index}, '${item.a.replace(/'/g, "\\'")}')">Verifica</button>
+                    </div>
+                    <div class="feedback" id="${prefix}-feedback-${index}"></div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function checkInlineAnswer(prefix, index, correctAnswer) {
+            const input = document.getElementById(`${prefix}-ans-${index}`);
+            const feedback = document.getElementById(`${prefix}-feedback-${index}`);
+            
+            const userVal = input.value.trim().toLowerCase().replace(/\.$/, '');
+            const correctVal = correctAnswer.trim().toLowerCase().replace(/\.$/, '');
+
+            if (userVal === "") {
+                feedback.textContent = "⚠️ Inserisci una risposta!";
+                feedback.className = "feedback incorrect";
+                return;
+            }
+
+            if (userVal === correctVal) {
+                feedback.textContent = "Corretto! 🎉";
+                feedback.className = "feedback correct";
+                input.disabled = true;
+                input.style.borderColor = "var(--success)";
+                updateScore(prefix);
+            } else {
+                feedback.textContent = `❌ Sbagliato. La risposta corretta era: "${correctAnswer}"`;
+                feedback.className = "feedback incorrect";
+                input.style.borderColor = "var(--error)";
+            }
+        }
+
+        function updateScore(prefix) {
+            const scoreId = `score-${prefix}`;
+            const scoreDisplay = document.getElementById(scoreId);
+            let current = parseInt(scoreDisplay.textContent.split('/')[0].replace('Punteggio:', '').trim());
+            current++;
+            scoreDisplay.textContent = `Punteggio: ${current} / 5`;
+        }
+
+        window.onload = function() {
+            loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1');
+            loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2');
+            loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3');
+            loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4');
+            loadInlineQuiz(bankEx5, 'container-ex5', 'score-ex5', 'ex5');
+        };
+    </script>
+</body>
+</html>
