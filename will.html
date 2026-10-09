@@ -369,4 +369,128 @@
             { textBefore: "She", textAfter: "her grandparents this weekend. It's already planned.", hint: "(visit)", a: "is going to visit" },
             { textBefore: "I promise I", textAfter: "your secret to anyone.", hint: "(tell)", a: "won't tell" },
             { textBefore: "He has bought his ticket. He", textAfter: "a new car.", hint: "(buy)", a: "is going to buy" },
-            { textBefore: "What",
+            { textBefore: "What", textAfter: "do when you grow up?", hint: "(you / do)", a: "are you going to" }
+        ];
+
+        const bankEx3 = [
+            { textBefore: "I", textAfter: "change my mind.", hint: "(won't)", a: "won't" },
+            { textBefore: "He", textAfter: "to the party if he's tired.", hint: "(come)", a: "won't come" },
+            { textBefore: "They", textAfter: "accept your offer.", hint: "(agree)", a: "won't agree" },
+            { textBefore: "She", textAfter: "about the accident.", hint: "(know)", a: "won't know" },
+            { textBefore: "It", textAfter: "cold tomorrow.", hint: "(be)", a: "won't be" },
+            { textBefore: "We", textAfter: "forget this journey.", hint: "(forget)", a: "won't forget" },
+            { textBefore: "You", textAfter: "find a better price anywhere.", hint: "(find)", a: "won't find" },
+            { textBefore: "Mark", textAfter: "leave his job.", hint: "(quit)", a: "won't quit" },
+            { textBefore: "The rain", textAfter: "stop before evening.", hint: "(stop)", a: "won't stop" },
+            { textBefore: "I", textAfter: "pay for bad service.", hint: "(pay)", a: "won't pay" }
+        ];
+
+        const bankEx4 = [
+            { textBefore: "", textAfter: "us tomorrow?", hint: "(you / help)", a: "will you help" },
+            { textBefore: "", textAfter: "the test?", hint: "(she / pass)", a: "will she pass" },
+            { textBefore: "", textAfter: "on time?", hint: "(they / arrive)", a: "will they arrive" },
+            { textBefore: "", textAfter: "me a favor?", hint: "(you / do)", a: "will you do" },
+            { textBefore: "", textAfter: "tomorrow?", hint: "(it / snow)", a: "will it snow" },
+            { textBefore: "", textAfter: "early?", hint: "(he / come)", a: "will he come" },
+            { textBefore: "", textAfter: "dinner?", hint: "(we / eat)", a: "will we eat" },
+            { textBefore: "", textAfter: "the truth?", hint: "(they / tell)", a: "will they tell" },
+            { textBefore: "", textAfter: "me?", hint: "(you / miss)", a: "will you miss" },
+            { textBefore: "", textAfter: "this song?", hint: "(she / sing)", a: "will she sing" }
+        ];
+
+        const bankEx5 = [
+            { textBefore: "I think it", textAfter: "tomorrow.", hint: "(will snow)", a: "will snow" },
+            { textBefore: "She", textAfter: "to your party.", hint: "(won't come)", a: "won't come" },
+            { textBefore: "", textAfter: "us tonight?", hint: "(will you call)", a: "will you call" },
+            { textBefore: "We", textAfter: "the match easily.", hint: "(will win)", a: "will win" },
+            { textBefore: "He", textAfter: "his homework on time.", hint: "(won't finish)", a: "won't finish" },
+            { textBefore: "", textAfter: "on time?", hint: "(will they arrive)", a: "will they arrive" },
+            { textBefore: "I", textAfter: "you carry those bags.", hint: "(will help)", a: "will help" },
+            { textBefore: "They", textAfter: "our secret.", hint: "(won't tell)", a: "won't tell" },
+            { textBefore: "", textAfter: "the door, please?", hint: "(will you open)", a: "will you open" },
+            { textBefore: "She", textAfter: "a great doctor one day.", hint: "(will be)", a: "will be" }
+        ];
+
+        function switchTab(tabId, event) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function loadInlineQuiz(bank, containerId, scoreId, prefix) {
+            const container = document.getElementById(containerId);
+            const scoreDisplay = document.getElementById(scoreId);
+            container.innerHTML = '';
+            scoreDisplay.textContent = 'Punteggio: 0 / 5';
+
+            const shuffled = [...bank].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 5);
+
+            selected.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'question-item';
+                
+                let bText = (prefix === 'ex4') ? "" : (item.textBefore || "");
+                let aText = item.textAfter || "";
+                let showBefore = (prefix === 'ex4') ? false : (bText !== "");
+
+                itemDiv.innerHTML = `
+                    <div class="sentence-container">
+                        <span>${index + 1}.</span>
+                        ${showBefore ? `<span>${bText}</span>` : ''}
+                        <input type="text" class="inline-input" id="${prefix}-ans-${index}" placeholder="${item.hint}">
+                        <span>${aText}</span>
+                        <button class="btn ${prefix === 'ex5' ? 'btn-mix' : ''}" onclick="checkInlineAnswer('${prefix}', ${index}, '${item.a.replace(/'/g, "\\'")}')">Verifica</button>
+                    </div>
+                    <div class="feedback" id="${prefix}-feedback-${index}"></div>
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function checkInlineAnswer(prefix, index, correctAnswer) {
+            const input = document.getElementById(`${prefix}-ans-${index}`);
+            const feedback = document.getElementById(`${prefix}-feedback-${index}`);
+            
+            const userVal = input.value.trim().toLowerCase().replace(/\.$/, '');
+            const correctVal = correctAnswer.trim().toLowerCase().replace(/\.$/, '');
+
+            if (userVal === "") {
+                feedback.textContent = "⚠️ Inserisci una risposta!";
+                feedback.className = "feedback incorrect";
+                return;
+            }
+
+            if (userVal === correctVal) {
+                feedback.textContent = "Corretto! 🎉";
+                feedback.className = "feedback correct";
+                input.disabled = true;
+                input.style.borderColor = "var(--success)";
+                updateScore(prefix);
+            } else {
+                feedback.textContent = `❌ Sbagliato. La risposta corretta era: "${correctAnswer}"`;
+                feedback.className = "feedback incorrect";
+                input.style.borderColor = "var(--error)";
+            }
+        }
+
+        function updateScore(prefix) {
+            const scoreId = `score-${prefix}`;
+            const scoreDisplay = document.getElementById(scoreId);
+            let current = parseInt(scoreDisplay.textContent.split('/')[0].replace('Punteggio:', '').trim());
+            current++;
+            scoreDisplay.textContent = `Punteggio: ${current} / 5`;
+        }
+
+        window.onload = function() {
+            loadInlineQuiz(bankEx1, 'container-ex1', 'score-ex1', 'ex1');
+            loadInlineQuiz(bankEx2, 'container-ex2', 'score-ex2', 'ex2');
+            loadInlineQuiz(bankEx3, 'container-ex3', 'score-ex3', 'ex3');
+            loadInlineQuiz(bankEx4, 'container-ex4', 'score-ex4', 'ex4');
+            loadInlineQuiz(bankEx5, 'container-ex5', 'score-ex5', 'ex5');
+        };
+    </script>
+</body>
+</html>
